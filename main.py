@@ -1,9 +1,10 @@
-import streamlit
-import numpy
 import datetime
+import numpy as np
 import pytz
-
-
+import streamlit as st
+from timezonefinder import TimezoneFinder
+import time
+from datetime import datetime
 
 hidden_from_streamlit = '''
         IMPORTANT
@@ -46,8 +47,23 @@ Local Mean Sidereal Time (LMST)
         
         
 '''
+# Get timezone and UTC time from user's coordinates
 
-# Julian Day
+# Julian Day temporary*****it's going to be updated to inputs in a couple hours
+
+year = 2023
+month = 4
+day = 10
+hours = 12
+minutes = 30
+seconds = 30
+
+decimal_hours = hours + minutes/60 + seconds/3600
+
+julian_day = int(365.25*(year+4716)) + int(30.6001*(month+1)) + day+decimal_hours
+
+print(decimal_hours)
+print(julian_day)
 
 # Julian Century
 
