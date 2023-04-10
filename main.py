@@ -1,10 +1,10 @@
-import datetime
-import numpy as np
+import threading
+import time
+from datetime import datetime, tzinfo
+# import numpy as np
 import pytz
 import streamlit as st
 from timezonefinder import TimezoneFinder
-import time
-from datetime import datetime
 
 hidden_from_streamlit = '''
         IMPORTANT
@@ -47,23 +47,43 @@ Local Mean Sidereal Time (LMST)
         
         
 '''
-# Get timezone and UTC time from user's coordinates
 
-# Julian Day temporary****it's going to be updated to inputs in a couple hours
+class julianDayCalculations:
 
-year = 2023
-month = 4
-day = 10
-hours = 12
-minutes = 30
-seconds = 30
+    def timezone_utc_and_julian_day(self):
+        # Get timezone and UTC time from user's coordinates // UTC time
+        tf = TimezoneFinder()
+        while True:
 
-decimal_hours = hours + minutes/60 + seconds/3600
+            latitude = -23.326388680858557
+            longitude = -51.20127294353894
 
-julian_day = int(365.25*(year+4716)) + int(30.6001*(month+1)) + day+decimal_hours
+            timezone = tf.timezone_at(lat=latitude, lng=longitude)
 
-print(decimal_hours)
-print(julian_day)
+            # Get UTC time
+            utc_time = datetime.now(tz=pytz.UTC)
+            print(timezone)
+            print(utc_time)
+
+            # It's self explanatory
+            year = utc_time.year
+            month = utc_time.month
+            day = utc_time.day
+            hour = utc_time.hour
+            minute = utc_time.minute
+            second = utc_time.second
+
+            decimal_hours = hour + minute / 60 + second / 3600
+
+            # Applying the JD = INT(365.25*(Y + 4716)) + INT(30.6001*(M + 1)) + D + B - 1524.5 from NREL
+            julian_day = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + day + decimal_hours
+
+            print(julian_day)
+
+            time.sleep(5)
+
+jdc = julianDayCalculations()
+jdc.timezone_utc_and_julian_day()
 
 # Julian Century
 
