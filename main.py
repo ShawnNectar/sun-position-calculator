@@ -49,7 +49,7 @@ Local Mean Sidereal Time (LMST)
 '''
 # Get timezone and UTC time from user's coordinates
 
-# Julian Day temporary*****it's going to be updated to inputs in a couple hours
+# Julian Day temporary****it's going to be updated to inputs in a couple hours
 
 year = 2023
 month = 4
