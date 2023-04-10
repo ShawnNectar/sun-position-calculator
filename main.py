@@ -10,10 +10,10 @@ hidden_from_streamlit = '''
         IMPORTANT
         
 Julian Day
-    JD = 2451545.0 + (Current Time UTC - 12:00:00) / 24.0
+    JD = INT(365.25*(Y + 4716)) + INT(30.6001*(M + 1)) + D + B - 1524.5
 
 Julian Century
-    JC = (JD - 2451545.0) / 36525.0
+    JC = (JD - 2451545) / 36525
 
 Geometric Mean Longitude of the Sun (GMST0)
     GMST0 = 280.46061837 + 360.98564736629 * (JD - 2451545.0) + 0.000387933 * JC * JC - (JC * JC * JC) / 38710000.0
@@ -48,16 +48,17 @@ Local Mean Sidereal Time (LMST)
         
 '''
 
-class julianDayCalculations:
+class JulianDayCalculations:
+    def __init__(self):
+        self.julian_day = None
 
+    # Julian Day and UTC and Timezone
     def timezone_utc_and_julian_day(self):
         # Get timezone and UTC time from user's coordinates // UTC time
         tf = TimezoneFinder()
         while True:
-
             latitude = -23.326388680858557
             longitude = -51.20127294353894
-
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
 
             # Get UTC time
@@ -78,14 +79,36 @@ class julianDayCalculations:
             # Applying the JD = INT(365.25*(Y + 4716)) + INT(30.6001*(M + 1)) + D + B - 1524.5 from NREL
             julian_day = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + day + decimal_hours
 
+            self.julian_day = julian_day
             print(julian_day)
 
             time.sleep(5)
 
-jdc = julianDayCalculations()
-jdc.timezone_utc_and_julian_day()
-
 # Julian Century
+class JulianCenturyCalculations:
+    def __init__(self, jdc):
+        self.jdc = jdc
+
+    def julian_century_and_epoch(self):
+        while True:
+            julian_day = self.jdc.julian_day
+            if julian_day is not None:
+                # Applying the JC = (JD - 2451545) / 36525 from NREL
+                julian_century = (julian_day - 2451545) / 36525
+                print(julian_century)
+
+            time.sleep(5)
+
+jdc = JulianDayCalculations()
+julian_day_thread = threading.Thread(target=jdc.timezone_utc_and_julian_day)
+julian_day_thread.start()
+
+jcc = JulianCenturyCalculations(jdc)
+julian_century_thread = threading.Thread(target=jcc.julian_century_and_epoch)
+julian_century_thread.start()
+
+
+
 
 # Geometric Mean Longitude of the Sun (GMST0)
 
