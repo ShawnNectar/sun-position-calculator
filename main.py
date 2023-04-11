@@ -107,10 +107,10 @@ class geometricMeanLongitudeSunCalculations:
 
     def mean_longitude(self):
         while True:
-            # GMST0 = 280.46061837 + 360.98564736629 * (JD - 2451545.0) + 0.000387933 * JC * JC - (JC * JC * JC) / 38710000.0
             julian_day = self.jdc.julian_day
             julian_century = self.jcc.julian_century
             if julian_day is not None and julian_century is not None:
+                # Applying GMST0 = 280.46061837 + 360.98564736629 * (JD - 2451545.0) + 0.000387933 * JC * JC - (JC * JC * JC) / 38710000.0
                 GMST0 = 280.46061837 + 360.98564736629 * (julian_day - 2451545.0) + 0.000387933 * julian_century * julian_century - (julian_century * julian_century * julian_century) / 38710000.0
                 print(f"GMST0: {GMST0}")
 
