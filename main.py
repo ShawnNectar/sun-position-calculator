@@ -1,12 +1,13 @@
 import threading
 import time
 from datetime import datetime, tzinfo
+
 # import numpy as np
 import pytz
 import streamlit as st
 from timezonefinder import TimezoneFinder
 
-hidden_from_streamlit = '''
+hidden_from_streamlit = """
         IMPORTANT
         
 Julian Day
@@ -46,7 +47,8 @@ Local Mean Sidereal Time (LMST)
     LMST = GMST + observer's longitude / 15.0
         
         
-'''
+"""
+
 
 class JulianDayCalculations:
     def __init__(self):
@@ -77,12 +79,18 @@ class JulianDayCalculations:
             decimal_hours = hour + minute / 60 + second / 3600
 
             # Applying the JD = INT(365.25*(Y + 4716)) + INT(30.6001*(M + 1)) + D + B - 1524.5 from NREL
-            julian_day = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + day + decimal_hours
+            julian_day = (
+                int(365.25 * (year + 4716))
+                + int(30.6001 * (month + 1))
+                + day
+                + decimal_hours
+            )
 
             self.julian_day = julian_day
             print(f"Julian Day: {julian_day}")
 
             time.sleep(5)
+
 
 # Julian Century
 class JulianCenturyCalculations:
@@ -99,11 +107,11 @@ class JulianCenturyCalculations:
 
             time.sleep(5)
 
+
 class geometricMeanLongitudeSunCalculations:
-    def __init__(self, jdc,jcc):
+    def __init__(self, jdc, jcc):
         self.jdc = jdc
         self.jcc = jcc
-
 
     def mean_longitude(self):
         while True:
@@ -111,9 +119,13 @@ class geometricMeanLongitudeSunCalculations:
             julian_century = self.jcc.julian_century
             if julian_day is not None and julian_century is not None:
                 # Applying GMST0 = 280.46061837 + 360.98564736629 * (JD - 2451545.0) + 0.000387933 * JC * JC - (JC * JC * JC) / 38710000.0
-                GMST0 = 280.46061837 + 360.98564736629 * (julian_day - 2451545.0) + 0.000387933 * julian_century * julian_century - (julian_century * julian_century * julian_century) / 38710000.0
+                GMST0 = (
+                    280.46061837
+                    + 360.98564736629 * (julian_day - 2451545.0)
+                    + 0.000387933 * julian_century * julian_century
+                    - (julian_century * julian_century * julian_century) / 38710000.0
+                )
                 print(f"GMST0: {GMST0}")
-
 
 
 jdc = JulianDayCalculations()
@@ -127,11 +139,6 @@ julian_century_thread.start()
 gmls = geometricMeanLongitudeSunCalculations(jdc, jcc)
 gmls_thread = threading.Thread(target=gmls.mean_longitude)
 gmls_thread.start()
-
-
-
-
-
 
 
 # Geometric Mean Longitude of the Sun (GMST0)
