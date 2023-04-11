@@ -80,7 +80,7 @@ class JulianDayCalculations:
             julian_day = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + day + decimal_hours
 
             self.julian_day = julian_day
-            print(julian_day)
+            print(f"Julian Day: {julian_day}")
 
             time.sleep(5)
 
@@ -95,9 +95,26 @@ class JulianCenturyCalculations:
             if julian_day is not None:
                 # Applying the JC = (JD - 2451545) / 36525 from NREL
                 julian_century = (julian_day - 2451545) / 36525
-                print(julian_century)
+                print(f"Julian Century: {julian_century}")
 
             time.sleep(5)
+
+class geometricMeanLongitudeSunCalculations:
+    def __init__(self, jdc,jcc):
+        self.jdc = jdc
+        self.jcc = jcc
+
+
+    def mean_longitude(self):
+        while True:
+            # GMST0 = 280.46061837 + 360.98564736629 * (JD - 2451545.0) + 0.000387933 * JC * JC - (JC * JC * JC) / 38710000.0
+            julian_day = self.jdc.julian_day
+            julian_century = self.jcc.julian_century
+            if julian_day is not None and julian_century is not None:
+                GMST0 = 280.46061837 + 360.98564736629 * (julian_day - 2451545.0) + 0.000387933 * julian_century * julian_century - (julian_century * julian_century * julian_century) / 38710000.0
+                print(f"GMST0: {GMST0}")
+
+
 
 jdc = JulianDayCalculations()
 julian_day_thread = threading.Thread(target=jdc.timezone_utc_and_julian_day)
@@ -106,6 +123,13 @@ julian_day_thread.start()
 jcc = JulianCenturyCalculations(jdc)
 julian_century_thread = threading.Thread(target=jcc.julian_century_and_epoch)
 julian_century_thread.start()
+
+gmls = geometricMeanLongitudeSunCalculations(jdc, jcc)
+gmls_thread = threading.Thread(target=gmls.mean_longitude)
+gmls_thread.start()
+
+
+
 
 
 
