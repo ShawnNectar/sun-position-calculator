@@ -1,5 +1,7 @@
 import threading
 import time
+from astropy.time import Time
+from astropy.coordinates import EarthLocation
 from datetime import datetime #, tzinfo
 
 # import numpy as np
@@ -265,12 +267,14 @@ class SunPosition:
     def __init__(self):
         self.julian_day = None
         self.julian_century = None
+        self.latitude = -23.326388680858557
+        self.longitude = -51.20127294353894
 
     def timezone_utc_and_julian_day(self):
         tf = TimezoneFinder()
         while True:
-            latitude = -23.326388680858557
-            longitude = -51.20127294353894
+            latitude = self.latitude
+            longitude = self.longitude
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
 
             utc_time = datetime.now(tz=pytz.UTC)
@@ -307,21 +311,31 @@ class SunPosition:
                 print(f"Julian Century: {julian_century}")
 
             time.sleep(5)
-
-    def mean_longitude(self):
+    def TT_and_UT1_time(self):
         while True:
-            julian_day = self.julian_day
-            julian_century = self.julian_century
-            if julian_day is not None and julian_century is not None:
-                GMST0 = (
-                        280.46061837
-                        + 360.98564736629 * (julian_day - 2451545.0)
-                        + 0.000387933 * julian_century * julian_century
-                        - (julian_century * julian_century * julian_century) / 38710000.0
-                )
-                print(f"GMST0: {GMST0}")
+            latitude = self.latitude
+            longitude = self.longitude
+            location = EarthLocation.from_geodetic(lon=longitude, lat=latitude, height=0)
+
+            time_utc = Time.now()
+            delta_ut1_utc = time_utc.ut1 - time_utc.utc
+            time_UT1 = time_utc.utc + delta_ut1_utc
+            time_TT = time_utc.tt
+
+            print("TT:", time_TT)
+            print("UT1:", time_UT1)
 
             time.sleep(5)
+"""    def delta_t_time(self):
+        while True:
+            delta_t =
+
+    def julian_ephemeris_day(self):
+        while True:
+            julian_day = self.julian_day
+            JDE = julian_day + (_ / 86400)"""
+
+
 
 
 sun_position = SunPosition()
@@ -332,6 +346,7 @@ julian_day_thread.start()
 julian_century_thread = threading.Thread(target=sun_position.julian_century_and_epoch)
 julian_century_thread.start()
 
-mean_longitude_thread = threading.Thread(target=sun_position.mean_longitude)
-mean_longitude_thread.start()
+TT_and_UT1_time_thread = threading.Thread(target=sun_position.TT_and_UT1_time)
+TT_and_UT1_time_thread.start()
+
 
