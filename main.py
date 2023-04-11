@@ -46,6 +46,7 @@ Greenwich Mean Sidereal Time (GMST)
 Local Mean Sidereal Time (LMST)
     LMST = GMST + observer's longitude / 15.0
         
+        MAY CHANGE TO NPEL PATTERN 
         
 """
 
