@@ -453,6 +453,13 @@ class SunPosition:
 
                     self.sum_L3 = sum_L3
 
+                for i in range(len(terms_L4)):
+                    sum_L4 += terms_L4[i][0] * math.cos(
+                        terms_L4[i][1] + terms_L4[i][2] * julian_ephemeris_millennium
+                    )
+
+                    self.sum_L3 = sum_L4
+
 
             time.sleep(1)
 
@@ -489,6 +496,7 @@ class SunPosition:
                 and sum_L1
                 and sum_L2
                 and sum_L3
+                and sum_L4
                 is not None
             ):
                 print("Values: ")
@@ -508,6 +516,7 @@ class SunPosition:
                 print(f"Sum of L1: {sum_L1}")
                 print(f"Sum of L2: {sum_L2}")
                 print(f"Sum of L3: {sum_L3}")
+                print(f"Sum of L4: {sum_L4}")
 
             time.sleep(1)
 
