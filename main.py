@@ -41,7 +41,11 @@ hidden_from_streamlit = """
 ║     Ld = (L * 180) / pi                      ║     
 ║                                              ║
 ║ Geocentric Longitude (degrees)               ║
-║     Geo_Lat = L + 180                        ║    
+║     Geo_Lat = L + 180                        ║
+║                                              ║
+║ Geocentric Latitude (degrees)                ║
+║     Geo_Lat = - B                            ║
+║   Geo_Lat =                                  ║     
 ║                                              ║
 ╚══════════════════════════════════════════════╝
 
