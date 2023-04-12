@@ -39,15 +39,15 @@ hidden_from_streamlit = """
 ║                                              ║                
 ║ L in Degrees                                 ║                 
 ║     Ld = (L * 180) / pi                      ║     
-║                                              ║     
+║                                              ║
+║ Geocentric Longitude (degrees)               ║
+║     Geo_Lat = L + 180                        ║    
 ║                                              ║
 ╚══════════════════════════════════════════════╝
 
-L in Degress
+Geocentric Longitude (degrees)
 
-Ld = (L * 180) / pi
-
-
+Geo_Lat = L + 180
 """
 
 
