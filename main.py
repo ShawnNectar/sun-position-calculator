@@ -44,8 +44,7 @@ hidden_from_streamlit = """
 ║     Geo_Lat = L + 180                        ║
 ║                                              ║
 ║ Geocentric Latitude (degrees)                ║
-║     Geo_Lat = - B                            ║
-║   Geo_Lat =                                  ║     
+║     Geo_Lat = - B                            ║     
 ║                                              ║
 ╚══════════════════════════════════════════════╝
 
