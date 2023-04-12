@@ -201,7 +201,9 @@ class SunPosition:
             (2, 1, 3.84, 12566.15),
         )
 
-        periodic_terms_L5 = (0, 1, 3.14, 0)
+        periodic_terms_L5 = (
+            (1, 1, 3.14, 0) #0 to 1
+        )
 
         periodic_terms_B0 = (
             (0, 280, 3.199, 84334.662),
@@ -211,7 +213,9 @@ class SunPosition:
             (4, 32, 4, 1577.34),
         )
 
-        periodic_terms_B1 = ((0, 9, 3.9, 5507.55), (1, 6, 1.73, 5223.69))
+        periodic_terms_B1 = (
+            (0, 9, 3.9, 5507.55),
+            (1, 6, 1.73, 5223.69))
 
         periodic_terms_R0 = (
             (0, 100013989, 0, 0),
@@ -280,7 +284,7 @@ class SunPosition:
 
         periodic_terms_R3 = ((0, 145, 4.273, 6283.076), (1, 7, 3.92, 12566.15))
 
-        periodic_terms_R4 = (0, 4, 2.56, 6283.08)
+        periodic_terms_R4 = (1, 4, 2.56, 6283.08) # 0 to 1
 
         self.terms_L0 = periodic_terms_L0
         self.terms_L1 = periodic_terms_L1
@@ -460,6 +464,15 @@ class SunPosition:
 
                     self.sum_L4 = sum_L4
 
+                for i in range(len(terms_L5)):
+                    sum_L5 += terms_L5[i][0] * math.cos(
+                        terms_L5[i][1] + terms_L5[i][2] * julian_ephemeris_millennium
+                    )
+
+                    self.sum_L5 = sum_L5
+
+
+
 
             time.sleep(1)
 
@@ -497,6 +510,7 @@ class SunPosition:
                 and sum_L2
                 and sum_L3
                 and sum_L4
+                and sum_L5
                 is not None
             ):
                 print("Values: ")
@@ -517,6 +531,7 @@ class SunPosition:
                 print(f"Sum of L2: {sum_L2}")
                 print(f"Sum of L3: {sum_L3}")
                 print(f"Sum of L4: {sum_L4}")
+                print(f"Sum of L5: {sum_L5}")
 
             time.sleep(1)
 
