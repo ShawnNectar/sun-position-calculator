@@ -281,6 +281,8 @@ class SunPosition:
         self.julian_century = None
         self.julian_ephemeris_day = None
         self.julian_ephemeris_century = None
+        self.julian_ephemeris_millennium = None
+
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
         self.timezone = None
@@ -341,13 +343,24 @@ class SunPosition:
 
             time.sleep(1)
 
+    def julian_ephemeris_millennium_func(self):
+        while True:
+            julian_ephemeris_century= self.julian_ephemeris_century
+            if julian_ephemeris_century is not None:
+                julian_ephemeris_millennium = julian_ephemeris_century / 10
+
+                self.julian_ephemeris_millennium = julian_ephemeris_millennium
+
+            time.sleep(1)
+
     def show_all_values(self):
         while True:
             julian_day = self.julian_day
             julian_century = self.julian_century
             julian_ephemeris_day = self.julian_ephemeris_day
             julian_ephemeris_century = self.julian_ephemeris_century
-            if julian_day and julian_century and julian_ephemeris_day is not None:
+            julian_ephemeris_millennium = self.julian_ephemeris_millennium
+            if julian_day and julian_century and julian_ephemeris_day and julian_ephemeris_century and julian_ephemeris_millennium is not None:
                 print("Values: ")
                 print(f"Julian Day: {julian_day}")
                 print(f"Julian Century: {julian_century}")
@@ -358,6 +371,8 @@ class SunPosition:
                 print(f"Julian Ephemeris Century: {julian_ephemeris_century}")
 
                 print("")
+
+                print(f"Julian Ephemeris Millennium: {julian_ephemeris_millennium}")
 
             time.sleep(1)
 
@@ -374,6 +389,9 @@ julian_ephemeris_day_thread = threading.Thread(
     target=sun_position.julian_ephemeris_day_and_century
 )
 julian_ephemeris_day_thread.start()
+
+julian_ephemeris_millennium_thread = threading.Thread(target=sun_position.julian_ephemeris_millennium_func)
+julian_ephemeris_millennium_thread.start()
 
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
