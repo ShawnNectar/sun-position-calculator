@@ -445,7 +445,9 @@ class SunPosition:
                 and julian_ephemeris_day
                 and julian_ephemeris_century
                 and julian_ephemeris_millennium
-                and sum_L0 is not None
+                and sum_L0
+                and sum_L1
+                is not None
             ):
                 print("Values: ")
                 print(f"Julian Day: {julian_day}")
