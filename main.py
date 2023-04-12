@@ -305,6 +305,7 @@ class SunPosition:
         self.julian_ephemeris_millennium = None
 
         self.sum_L0 = None
+        self.sum_L1 = None
 
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
@@ -379,6 +380,20 @@ class SunPosition:
     def earth_periodic_terms_sum(self):
         while True:
             terms_L0 = self.terms_L0
+            terms_L1 = self.terms_L1
+            terms_L2 = self.terms_L2
+            terms_L3 = self.terms_L3
+            terms_L4 = self.terms_L4
+            terms_L5 = self.terms_L5
+
+            terms_B0 = self.terms_B0
+            terms_B1 = self.terms_B1
+
+            terms_R0 = self.terms_R0
+            terms_R1 = self.terms_R1
+            terms_R2 = self.terms_R2
+            terms_R3 = self.terms_R3
+            terms_R4 = self.terms_R4
 
             julian_ephemeris_millennium = self.julian_ephemeris_millennium
 
@@ -404,6 +419,15 @@ class SunPosition:
                     )
 
                     self.sum_L0 = sum_L0
+
+                for i in range(len(terms_L1)):
+                    sum_L1 += terms_L1[i][0] * math.cos(
+                        terms_L1[i][1] + terms_L1[i][2] * julian_ephemeris_millennium
+                    )
+
+                    self.sum_L1 = sum_L1
+
+
             time.sleep(1)
 
     def show_all_values(self):
@@ -414,6 +438,7 @@ class SunPosition:
             julian_ephemeris_century = self.julian_ephemeris_century
             julian_ephemeris_millennium = self.julian_ephemeris_millennium
             sum_L0 = self.sum_L0
+            sum_L1 = self.sum_L1
             if (
                 julian_day
                 and julian_century
@@ -436,6 +461,7 @@ class SunPosition:
                 print(f"Julian Ephemeris Millennium: {julian_ephemeris_millennium}")
 
                 print(f"Sum of L0: {sum_L0}")
+                print(f"Sum of L1: {sum_L1}")
 
             time.sleep(1)
 
