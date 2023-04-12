@@ -495,6 +495,13 @@ class SunPosition:
 
                     self.sum_R1 = sum_R1
 
+                for i in range(len(terms_R2)):
+                    sum_R2 += terms_R2[i][0] * math.cos(
+                        terms_R2[i][1] + terms_R2[i][2] * julian_ephemeris_millennium
+                    )
+
+                    self.sum_R2 = sum_R2
+
 
 
 
@@ -539,6 +546,7 @@ class SunPosition:
                     and sum_B1
                     and sum_R0
                     and sum_R1
+                    and sum_R2
                     is not None
             ):
                 print("Values: ")
@@ -564,6 +572,7 @@ class SunPosition:
                 print(f'Sum of B1: {sum_B1}')
                 print(f"Sum of R0: {sum_R0}")
                 print(f"Sum of R1: {sum_R1}")
+                print("Sum of R2: {sum_R2}")
             time.sleep(1)
 
 
