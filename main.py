@@ -1,12 +1,10 @@
-import time
-import pytz
 import threading
+import time
+from datetime import datetime
 
 import numpy as np
-
-from datetime import datetime
+import pytz
 from timezonefinder import TimezoneFinder
-
 
 hidden_from_streamlit = """
 
@@ -52,7 +50,6 @@ Geocentric Longitude (degrees)
 
 Geo_Lat = L + 180
 """
-
 
 periodic_terms_L0 = (
     (0, 175347046, 0, 0),
@@ -279,9 +276,10 @@ class SunPosition:
     def __init__(self):
         self.julian_day = None
         self.julian_century = None
-        self.julian_century2 = None
+        self.julian_ephemeris_day = None
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
+        self.timezone = None
         self.time_utc = None
 
     def timezone_utc_and_julian_day(self):
@@ -290,6 +288,7 @@ class SunPosition:
             latitude = self.latitude
             longitude = self.longitude
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
+            self.timezone = timezone
 
             utc_time = datetime.now(tz=pytz.UTC)
 
@@ -312,9 +311,7 @@ class SunPosition:
                 ),
                 decimal_hours,
             )
-
             self.julian_day = julian_day
-            print(f"Julian Day: {julian_day}")
 
             time.sleep(1)
 
@@ -323,8 +320,30 @@ class SunPosition:
             julian_day = self.julian_day
             if julian_day is not None:
                 julian_century = np.divide(np.subtract(julian_day, 2451545), 36525)
+                self.julian_century = julian_century
 
+            time.sleep(1)
+
+    def julian_ephemeris_day_deltat(self):
+        while True:
+            julian_day = self.julian_day
+            if julian_day is not None:
+                julian_ephemeris_day = julian_day + (37 / 86400)
+                self.julian_ephemeris_day = julian_ephemeris_day
+
+            time.sleep(1)
+
+    def show_all_values(self):
+        while True:
+            julian_day = self.julian_day
+            julian_century = self.julian_century
+            julian_ephemeris_day = self.julian_ephemeris_day
+            if julian_day and julian_century and julian_ephemeris_day is not None:
+                print(f"Julian Day: {julian_day}")
                 print(f"Julian Century: {julian_century}")
+                print(f"Julian Ephemeris Day: {julian_ephemeris_day}")
+
+                print("")
 
             time.sleep(1)
 
@@ -336,3 +355,11 @@ julian_day_thread.start()
 
 julian_century_thread = threading.Thread(target=sun_position.julian_century_and_epoch)
 julian_century_thread.start()
+
+julian_ephemeris_day_thread = threading.Thread(
+    target=sun_position.julian_ephemeris_day_deltat
+)
+julian_ephemeris_day_thread.start()
+
+show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
+show_all_values_thread.start()
