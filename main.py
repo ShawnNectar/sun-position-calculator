@@ -321,6 +321,10 @@ class SunPosition:
         self.sum_R3 = None
         self.sum_R4 = None
 
+        self.L_count = None
+        self.B_count = None
+        self.R_count = None
+
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
         self.timezone = None
@@ -516,9 +520,30 @@ class SunPosition:
 
                     self.sum_R4 = sum_R4
 
+                L_count = np.sum([sum_L0, sum_L1, sum_L2, sum_L3, sum_L4, sum_L5])
+                B_count = np.sum([sum_B0,sum_B1])
+                R_count = np.sum([sum_R0,sum_R1,sum_R2,sum_R3,sum_R4])
+
+                self.L_count = L_count
+                self.B_count = B_count
+                self.R_count = R_count
+
 
 
             time.sleep(1)
+
+    def earth_heliocentric_longitude(self):
+        while True:
+            L_count = self.L_count
+            B_count = self.B_count
+            R_count = self.R_count
+            if L_count and B_count and R_count is not None:
+                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+
+            time.sleep(1)
+
+
 
     def show_all_values(self):
         while True:
@@ -543,6 +568,10 @@ class SunPosition:
             sum_R3 = self.sum_R3
             sum_R4 = self.sum_R4
 
+            L_count = self.L_count
+            B_count = self.B_count
+            R_count = self.R_count
+
             if (
                     julian_day
                     and julian_century
@@ -562,6 +591,9 @@ class SunPosition:
                     and sum_R2
                     and sum_R3
                     and sum_R4
+                    and L_count
+                    and B_count
+                    and R_count
                     is not None
             ):
                 print("Values: ")
@@ -590,6 +622,9 @@ class SunPosition:
                 print(f"Sum of R2: {sum_R2}")
                 print(f"Sum of R3: {sum_R3}")
                 print(f"Sum of R4: {sum_R4}")
+                print(L_count)
+                print(B_count)
+                print(R_count)
             time.sleep(1)
 
 
@@ -615,6 +650,9 @@ earth_periodic_terms_sum_thread = threading.Thread(
     target=sun_position.earth_periodic_terms_sum
 )
 earth_periodic_terms_sum_thread.start()
+
+earth_heliocentric_longitude_thread = threading.Thread(target=sun_position.earth_heliocentric_longitude)
+earth_heliocentric_longitude_thread.start()
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
 show_all_values_thread.start()
