@@ -306,6 +306,19 @@ class SunPosition:
 
         self.sum_L0 = None
         self.sum_L1 = None
+        self.sum_L0 = None
+        self.sum_L1 = None
+        self.sum_L2 = None
+        self.sum_L3 = None
+        self.sum_L4 = None
+        self.sum_L5 = None
+        self.sum_B0 = None
+        self.sum_B1 = None
+        self.sum_R0 = None
+        self.sum_R1 = None
+        self.sum_R2 = None
+        self.sum_R3 = None
+        self.sum_R4 = None
 
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
@@ -426,6 +439,12 @@ class SunPosition:
                     )
 
                     self.sum_L1 = sum_L1
+                for i in range(len(terms_L2)):
+                    sum_L2 += terms_L2[i][0] * math.cos(
+                        terms_L2[i][1] + terms_L2[i][2] * julian_ephemeris_millennium
+                    )
+
+                    self.sum_L2 = sum_L2
 
 
             time.sleep(1)
@@ -439,6 +458,20 @@ class SunPosition:
             julian_ephemeris_millennium = self.julian_ephemeris_millennium
             sum_L0 = self.sum_L0
             sum_L1 = self.sum_L1
+            sum_L2 = self.sum_L2
+            sum_L3 = self.sum_L3
+            sum_L4 = self.sum_L4
+            sum_L5 = self.sum_L5
+
+            sum_B0 = self.sum_B0
+            sum_B1 = self.sum_B1
+
+            sum_R0 = self.sum_R0
+            sum_R1 = self.sum_R1
+            sum_R2 = self.sum_R2
+            sum_R3 = self.sum_R3
+            sum_R4 = self.sum_R4
+
             if (
                 julian_day
                 and julian_century
@@ -447,6 +480,7 @@ class SunPosition:
                 and julian_ephemeris_millennium
                 and sum_L0
                 and sum_L1
+                and sum_L2
                 is not None
             ):
                 print("Values: ")
@@ -464,6 +498,7 @@ class SunPosition:
 
                 print(f"Sum of L0: {sum_L0}")
                 print(f"Sum of L1: {sum_L1}")
+                print(f"Sum of L2: {sum_L2}")
 
             time.sleep(1)
 
