@@ -36,10 +36,16 @@ hidden_from_streamlit = """
 ║ Earth Heliocentric Longitude (radians)       ║
 ║     L = (L0 + L1 * JME + L2 * JME^2 + L3 *   ║
 ║     JME^3 + L4 * JME^4 + L5 * JME^5) / 10^8  ║
+║                                              ║                
+║ L in Degrees                                 ║                 
+║     Ld = (L * 180) / pi                      ║     
+║                                              ║     
 ║                                              ║
 ╚══════════════════════════════════════════════╝
 
+L in Degress
 
+Ld = (L * 180) / pi
 
 
 """
