@@ -458,7 +458,7 @@ class SunPosition:
                         terms_L4[i][1] + terms_L4[i][2] * julian_ephemeris_millennium
                     )
 
-                    self.sum_L3 = sum_L4
+                    self.sum_L4 = sum_L4
 
 
             time.sleep(1)
