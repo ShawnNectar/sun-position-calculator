@@ -34,7 +34,7 @@ hidden_from_streamlit = """
 ║   L0i = Ai * cos(Bi + Ci * JME)              ║
 ║                                              ║
 ║ Earth Heliocentric Longitude (radians)       ║
-║     L = (L0 + L1 * JME + L2 * JME^2 + L3 *   ║
+║     L = (L0 + L1 * JME + L2 * JME^2 + L3 * \ ║
 ║     JME^3 + L4 * JME^4 + L5 * JME^5) / 10^8  ║
 ║                                              ║                
 ║ L in Degrees                                 ║                 
