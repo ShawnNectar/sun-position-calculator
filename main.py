@@ -8,7 +8,6 @@ import pytz
 from timezonefinder import TimezoneFinder
 
 hidden_from_streamlit = """
-
 ╔══════════════════════════════════════════════╗
 ║                   IMPORTANT                  ║
 ║                                              ║
@@ -49,9 +48,7 @@ hidden_from_streamlit = """
 ║     Geo_Lat = - B                            ║     
 ║                                              ║
 ╚══════════════════════════════════════════════╝
-
 Geocentric Longitude (degrees)
-
 Geo_Lat = L + 180
 """
 
@@ -202,7 +199,7 @@ class SunPosition:
         )
 
         periodic_terms_L5 = (
-            (1, 1, 3.14, 0) #0 to 1
+            (0, 1, 3.14, 0)
         )
 
         periodic_terms_B0 = (
@@ -411,9 +408,7 @@ class SunPosition:
             terms_R2 = self.terms_R2
             terms_R3 = self.terms_R3
             terms_R4 = self.terms_R4
-
             julian_ephemeris_millennium = self.julian_ephemeris_millennium
-
             (
                 sum_L0,
                 sum_L1,
@@ -429,7 +424,9 @@ class SunPosition:
                 sum_R3,
                 sum_R4,
             ) = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
             if julian_ephemeris_millennium is not None:
+
                 for i in range(len(terms_L0)):
                     sum_L0 += terms_L0[i][0] * math.cos(
                         terms_L0[i][1] + terms_L0[i][2] * julian_ephemeris_millennium
@@ -456,7 +453,6 @@ class SunPosition:
                     )
 
                     self.sum_L3 = sum_L3
-
                 for i in range(len(terms_L4)):
                     sum_L4 += terms_L4[i][0] * math.cos(
                         terms_L4[i][1] + terms_L4[i][2] * julian_ephemeris_millennium
@@ -464,9 +460,9 @@ class SunPosition:
 
                     self.sum_L4 = sum_L4
 
-                for i in range(len(terms_L5)):
-                    sum_L5 += terms_L5[i][0] * math.cos(
-                        terms_L5[i][1] + terms_L5[i][2] * julian_ephemeris_millennium
+                for i in range(1):
+                    sum_L5 += 1 * math.cos(
+                        3.14 + 0 * julian_ephemeris_millennium
                     )
 
                     self.sum_L5 = sum_L5
@@ -500,18 +496,18 @@ class SunPosition:
             sum_R4 = self.sum_R4
 
             if (
-                julian_day
-                and julian_century
-                and julian_ephemeris_day
-                and julian_ephemeris_century
-                and julian_ephemeris_millennium
-                and sum_L0
-                and sum_L1
-                and sum_L2
-                and sum_L3
-                and sum_L4
-                and sum_L5
-                is not None
+                    julian_day
+                    and julian_century
+                    and julian_ephemeris_day
+                    and julian_ephemeris_century
+                    and julian_ephemeris_millennium
+                    and sum_L0
+                    and sum_L1
+                    and sum_L2
+                    and sum_L3
+                    and sum_L4
+                    and sum_L5
+                    is not None
             ):
                 print("Values: ")
                 print(f"Julian Day: {julian_day}")
