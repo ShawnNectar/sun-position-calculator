@@ -16,19 +16,31 @@ hidden_from_streamlit = """
 ║ Julian Day                                   ║
 ║   JD = INT(365.25*(Y + 4716)) +              ║
 ║        INT(30.6001*(M + 1)) + D + B - 1524.5 ║
+║                                              ║
 ║ Julian Century                               ║
 ║   JC = (JD - 2451545) / 36525                ║
+║                                              ║          
 ║ Julian Ephemeris Day                         ║
+║                                              ║         
 ║   JDE = JD + (ΔT / 86400)                    ║
 ║ Julian Ephemeris Century                     ║
 ║   JCE = (JDE - 2451545) / 36525              ║
+║                                              ║
 ║ Julian Ephemeris Millennium                  ║
 ║   JME = JCE/10                               ║
+║                                              ║
 ║ Earth heliocentric longitude, latitude, and  ║
 ║ radius vector (L, B, R)                      ║
 ║   L0i = Ai * cos(Bi + Ci * JME)              ║
 ║                                              ║
+║ Earth Heliocentric Longitude (radians)       ║
+║     L = (L0 + L1 * JME + L2 * JME^2 + L3 *   ║
+║     JME^3 + L4 * JME^4 + L5 * JME^5) / 10^8  ║
+║                                              ║
 ╚══════════════════════════════════════════════╝
+
+
+
 
 """
 
