@@ -325,6 +325,8 @@ class SunPosition:
         self.B_count = None
         self.R_count = None
 
+        self.heliocentric_longitude = None
+
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
         self.timezone = None
@@ -534,12 +536,24 @@ class SunPosition:
 
     def earth_heliocentric_longitude(self):
         while True:
-            L_count = self.L_count
-            B_count = self.B_count
-            R_count = self.R_count
-            if L_count and B_count and R_count is not None:
-                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
+            sum_L0 = self.sum_L0
+            sum_L1 = self.sum_L1
+            sum_L2 = self.sum_L2
+            sum_L3 = self.sum_L3
+            sum_L4 = self.sum_L4
+            sum_L5 = self.sum_L5
+
+            julian_ephemeris_millenium = self.julian_ephemeris_millennium
+
+            if julian_ephemeris_millenium and sum_L5 is not None:
+                heliocentric_Longitude = (sum_L0 + sum_L1 + sum_L2**2 + sum_L3**3 + sum_L4**4 + sum_L5**5) / 10**8
+
+                heliocentric_Longitude += (1.84972648**-8 * math.sin(math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)))
+
+                heliocentric_Longitude %= 360
+
+                self.heliocentric_longitude = heliocentric_Longitude
 
             time.sleep(1)
 
@@ -572,6 +586,8 @@ class SunPosition:
             B_count = self.B_count
             R_count = self.R_count
 
+            heliocentric_longitude = self.heliocentric_longitude
+
             if (
                     julian_day
                     and julian_century
@@ -594,6 +610,7 @@ class SunPosition:
                     and L_count
                     and B_count
                     and R_count
+                    and heliocentric_longitude
                     is not None
             ):
                 print("Values: ")
@@ -622,9 +639,10 @@ class SunPosition:
                 print(f"Sum of R2: {sum_R2}")
                 print(f"Sum of R3: {sum_R3}")
                 print(f"Sum of R4: {sum_R4}")
-                print(L_count)
-                print(B_count)
-                print(R_count)
+                print(f"L Sum: {L_count}")
+                print(f"B Sum: {B_count}")
+                print(f"R Sum: {R_count}")
+                print(f"Heliocentric Longitude: {heliocentric_longitude}")
             time.sleep(1)
 
 
@@ -653,6 +671,7 @@ earth_periodic_terms_sum_thread.start()
 
 earth_heliocentric_longitude_thread = threading.Thread(target=sun_position.earth_heliocentric_longitude)
 earth_heliocentric_longitude_thread.start()
+
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
 show_all_values_thread.start()
