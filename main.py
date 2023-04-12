@@ -1,33 +1,37 @@
-import threading
 import time
-from astropy.time import Time
-from astropy.coordinates import EarthLocation
-from datetime import datetime #, tzinfo
-
-# import numpy as np
 import pytz
-# import streamlit as st
+import threading
+
+import numpy as np
+
+from datetime import datetime
 from timezonefinder import TimezoneFinder
 
-hidden_from_streamlit = """
-        IMPORTANT
-        
-Julian Day
-    JD = INT(365.25*(Y + 4716)) + INT(30.6001*(M + 1)) + D + B - 1524.5
-Julian Century
-    JC = (JD - 2451545) / 36525
-Julian Ephemeris Day
-    JDE = JD + (ΔT / 86400)
-Julian Ephemeris Century
-    JCE = (JDE - 2451545) / 36525
-Julian Ephemeris Millennium
-    JME  = JCE/10
-Earth heliocentric longitude, latitude, and radius vector (L, B, R)
-    L0i = Ai * cos(Bi + Ci  * JME)
 
-    
-        
+hidden_from_streamlit = """
+
+╔══════════════════════════════════════════════╗
+║                   IMPORTANT                  ║
+║                                              ║
+║ Julian Day                                   ║
+║   JD = INT(365.25*(Y + 4716)) +              ║
+║        INT(30.6001*(M + 1)) + D + B - 1524.5 ║
+║ Julian Century                               ║
+║   JC = (JD - 2451545) / 36525                ║
+║ Julian Ephemeris Day                         ║
+║   JDE = JD + (ΔT / 86400)                    ║
+║ Julian Ephemeris Century                     ║
+║   JCE = (JDE - 2451545) / 36525              ║
+║ Julian Ephemeris Millennium                  ║
+║   JME = JCE/10                               ║
+║ Earth heliocentric longitude, latitude, and  ║
+║ radius vector (L, B, R)                      ║
+║   L0i = Ai * cos(Bi + Ci * JME)              ║
+║                                              ║
+╚══════════════════════════════════════════════╝
+
 """
+
 
 periodic_terms_L0 = (
     (0, 175347046, 0, 0),
@@ -93,7 +97,7 @@ periodic_terms_L0 = (
     (60, 33, 0.59, 17789.85),
     (61, 30, 0.44, 83996.85),
     (62, 30, 2.74, 1349.87),
-    (63, 25, 3.16, 4690.48)
+    (63, 25, 3.16, 4690.48),
 )
 
 periodic_terms_L1 = (
@@ -130,8 +134,7 @@ periodic_terms_L1 = (
     (30, 9, 5.64, 951.72),
     (31, 8, 5.3, 2352.87),
     (32, 6, 2.65, 9437.76),
-    (33, 6, 4.67, 4690.48)
-
+    (33, 6, 4.67, 4690.48),
 )
 
 periodic_terms_L2 = (
@@ -154,7 +157,7 @@ periodic_terms_L2 = (
     (16, 3, 0.31, 398.15),
     (17, 3, 2.28, 553.57),
     (18, 2, 4.38, 5223.69),
-    (19, 2, 3.75, 0.98)
+    (19, 2, 3.75, 0.98),
 )
 
 periodic_terms_L3 = (
@@ -164,31 +167,22 @@ periodic_terms_L3 = (
     (3, 3, 5.2, 155.42),
     (4, 1, 4.72, 3.52),
     (5, 1, 5.3, 18849.23),
-    (6, 1, 5.97, 242.73)
+    (6, 1, 5.97, 242.73),
 )
 
-periodic_terms_L4 = (
-    (0, 114, 3.142, 0),
-    (1, 8, 4.13, 6283.08),
-    (2, 1, 3.84, 12566.15)
-)
+periodic_terms_L4 = ((0, 114, 3.142, 0), (1, 8, 4.13, 6283.08), (2, 1, 3.84, 12566.15))
 
-periodic_terms_L5 = (
-    (0, 1, 3.14, 0)
-)
+periodic_terms_L5 = (0, 1, 3.14, 0)
 
 periodic_terms_B0 = (
     (0, 280, 3.199, 84334.662),
     (1, 102, 5.422, 5507.553),
     (2, 80, 3.88, 5223.69),
     (3, 44, 3.7, 2352.87),
-    (4, 32, 4, 1577.34)
+    (4, 32, 4, 1577.34),
 )
 
-periodic_terms_B1 = (
-    (0, 9, 3.9, 5507.55),
-    (1, 6, 1.73, 5223.69)
-)
+periodic_terms_B1 = ((0, 9, 3.9, 5507.55), (1, 6, 1.73, 5223.69))
 
 periodic_terms_R0 = (
     (0, 100013989, 0, 0),
@@ -230,7 +224,7 @@ periodic_terms_R0 = (
     (36, 32, 1.78, 398.15),
     (37, 28, 1.21, 6286.6),
     (38, 28, 1.9, 6279.55),
-    (39, 26, 4.59, 10447.39)
+    (39, 26, 4.59, 10447.39),
 )
 
 periodic_terms_R1 = (
@@ -243,7 +237,7 @@ periodic_terms_R1 = (
     (6, 18, 1.42, 1577.34),
     (7, 10, 5.91, 10977.08),
     (8, 9, 1.42, 6275.96),
-    (9, 9, 0.27, 5486.78)
+    (9, 9, 0.27, 5486.78),
 )
 
 periodic_terms_R2 = (
@@ -252,23 +246,22 @@ periodic_terms_R2 = (
     (2, 12, 3.14, 0),
     (3, 9, 3.63, 77713.77),
     (4, 6, 1.87, 5573.14),
-    (5, 3, 5.47, 18849.23)
+    (5, 3, 5.47, 18849.23),
 )
 
-periodic_terms_R3 = (
-    (0, 145, 4.273, 6283.076),
-    (1, 7, 3.92, 12566.15)
-)
+periodic_terms_R3 = ((0, 145, 4.273, 6283.076), (1, 7, 3.92, 12566.15))
 
-periodic_terms_R4 = (
-    (0, 4, 2.56, 6283.08)
-)
+periodic_terms_R4 = (0, 4, 2.56, 6283.08)
+
+
 class SunPosition:
     def __init__(self):
         self.julian_day = None
         self.julian_century = None
+        self.julian_century2 = None
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
+        self.time_utc = None
 
     def timezone_utc_and_julian_day(self):
         tf = TimezoneFinder()
@@ -278,8 +271,6 @@ class SunPosition:
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
 
             utc_time = datetime.now(tz=pytz.UTC)
-            print(timezone)
-            print(utc_time)
 
             year = utc_time.year
             month = utc_time.month
@@ -290,52 +281,31 @@ class SunPosition:
 
             decimal_hours = hour + minute / 60 + second / 3600
 
-            julian_day = (
-                    int(365.25 * (year + 4716))
-                    + int(30.6001 * (month + 1))
-                    + day
-                    + decimal_hours
+            julian_day = np.add(
+                np.add(
+                    np.add(
+                        np.multiply(365.25, np.add(year, 4716)),
+                        np.multiply(30.6001, np.add(month, 1)),
+                    ),
+                    day,
+                ),
+                decimal_hours,
             )
 
             self.julian_day = julian_day
             print(f"Julian Day: {julian_day}")
 
-            time.sleep(5)
+            time.sleep(1)
 
     def julian_century_and_epoch(self):
         while True:
             julian_day = self.julian_day
             if julian_day is not None:
-                julian_century = (julian_day - 2451545) / 36525
-                self.julian_century = julian_century
+                julian_century = np.divide(np.subtract(julian_day, 2451545), 36525)
+
                 print(f"Julian Century: {julian_century}")
 
-            time.sleep(5)
-    def TT_and_UT1_time(self):
-        while True:
-            latitude = self.latitude
-            longitude = self.longitude
-            location = EarthLocation.from_geodetic(lon=longitude, lat=latitude, height=0)
-
-            time_utc = Time.now()
-            delta_ut1_utc = time_utc.ut1 - time_utc.utc
-            time_UT1 = time_utc.utc + delta_ut1_utc
-            time_TT = time_utc.tt
-
-            print("TT:", time_TT)
-            print("UT1:", time_UT1)
-
-            time.sleep(5)
-"""    def delta_t_time(self):
-        while True:
-            delta_t =
-
-    def julian_ephemeris_day(self):
-        while True:
-            julian_day = self.julian_day
-            JDE = julian_day + (_ / 86400)"""
-
-
+            time.sleep(1)
 
 
 sun_position = SunPosition()
@@ -345,8 +315,3 @@ julian_day_thread.start()
 
 julian_century_thread = threading.Thread(target=sun_position.julian_century_and_epoch)
 julian_century_thread.start()
-
-TT_and_UT1_time_thread = threading.Thread(target=sun_position.TT_and_UT1_time)
-TT_and_UT1_time_thread.start()
-
-
