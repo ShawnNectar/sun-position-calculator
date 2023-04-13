@@ -550,7 +550,7 @@ class SunPosition:
                 heliocentric_Longitude = (sum_L0 + sum_L1 + sum_L2**2 + sum_L3**3 + sum_L4**4 + sum_L5**5) / 10**8
 
                 heliocentric_Longitude += (1.84972648**-8 * math.sin(math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)))
-
+                heliocentric_Longitude = (heliocentric_Longitude * 180) / math.pi
                 heliocentric_Longitude %= 360
 
                 self.heliocentric_longitude = heliocentric_Longitude
