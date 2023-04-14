@@ -322,7 +322,7 @@ class SunPosition:
 
         self.R_count = None
 
-        self.heliocentric_Longitude = None
+        self.heliocentric_longitude = None
 
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
@@ -536,7 +536,7 @@ class SunPosition:
             julian_ephemeris_millenium = self.julian_ephemeris_millennium
 
             if julian_ephemeris_millenium and sum_L5 is not None:
-                heliocentric_Longitude = (
+                heliocentric_longitude = (
                     sum_L0
                     + sum_L1
                     + sum_L2**2
@@ -545,13 +545,13 @@ class SunPosition:
                     + sum_L5**5
                 ) / 10**8
 
-                heliocentric_Longitude += 1.84972648**-8 * math.sin(
+                heliocentric_longitude += 1.84972648**-8 * math.sin(
                     math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)
                 )
-                heliocentric_Longitude = (heliocentric_Longitude * 180) / math.pi
-                heliocentric_Longitude %= 360
+                heliocentric_longitude = (heliocentric_longitude * 180) / math.pi
+                heliocentric_longitude %= 360
 
-                self.heliocentric_Longitude = heliocentric_Longitude
+                self.heliocentric_longitude = heliocentric_longitude
 
             time.sleep(1)
 
@@ -582,7 +582,7 @@ class SunPosition:
             B_count = self.B_count
             R_count = self.R_count
 
-            heliocentric_Longitude = self.heliocentric_Longitude
+            heliocentric_longitude = self.heliocentric_longitude
 
             if (
                 julian_day
@@ -636,7 +636,7 @@ class SunPosition:
                 print(f"L Sum: {L_count}")
                 print(f"B Sum: {B_count}")
                 print(f"R Sum: {R_count}")
-                print(f"Heliocentric Longitude: {heliocentric_Longitude}")
+                print(f"Heliocentric Longitude: {heliocentric_longitude}")
 
             time.sleep(1)
 
