@@ -198,9 +198,7 @@ class SunPosition:
             (2, 1, 3.84, 12566.15),
         )
 
-        periodic_terms_L5 = (
-            (0, 1, 3.14, 0)
-        )
+        periodic_terms_L5 = (0, 1, 3.14, 0)
 
         periodic_terms_B0 = (
             (0, 280, 3.199, 84334.662),
@@ -210,9 +208,7 @@ class SunPosition:
             (4, 32, 4, 1577.34),
         )
 
-        periodic_terms_B1 = (
-            (0, 9, 3.9, 5507.55),
-            (1, 6, 1.73, 5223.69))
+        periodic_terms_B1 = ((0, 9, 3.9, 5507.55), (1, 6, 1.73, 5223.69))
 
         periodic_terms_R0 = (
             (0, 100013989, 0, 0),
@@ -281,7 +277,7 @@ class SunPosition:
 
         periodic_terms_R3 = ((0, 145, 4.273, 6283.076), (1, 7, 3.92, 12566.15))
 
-        periodic_terms_R4 = (1, 4, 2.56, 6283.08) # 0 to 1
+        periodic_terms_R4 = (1, 4, 2.56, 6283.08)  # 0 to 1
 
         self.terms_L0 = periodic_terms_L0
         self.terms_L1 = periodic_terms_L1
@@ -323,9 +319,10 @@ class SunPosition:
 
         self.L_count = None
         self.B_count = None
+
         self.R_count = None
 
-        self.heliocentric_longitude = None
+        self.heliocentric_Longitude = None
 
         self.latitude = -23.326388680858557
         self.longitude = -51.20127294353894
@@ -432,111 +429,103 @@ class SunPosition:
             ) = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
             if julian_ephemeris_millennium is not None:
-
                 for i in range(len(terms_L0)):
-                    sum_L0 += terms_L0[i][0] * math.cos(
-                        terms_L0[i][1] + terms_L0[i][2] * julian_ephemeris_millennium
+                    sum_L0 += terms_L0[i][1] * math.cos(
+                        terms_L0[i][2] + terms_L0[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_L0 = sum_L0
 
                 for i in range(len(terms_L1)):
-                    sum_L1 += terms_L1[i][0] * math.cos(
-                        terms_L1[i][1] + terms_L1[i][2] * julian_ephemeris_millennium
+                    sum_L1 += terms_L1[i][1] * math.cos(
+                        terms_L1[i][2] + terms_L1[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_L1 = sum_L1
                 for i in range(len(terms_L2)):
-                    sum_L2 += terms_L2[i][0] * math.cos(
-                        terms_L2[i][1] + terms_L2[i][2] * julian_ephemeris_millennium
+                    sum_L2 += terms_L2[i][1] * math.cos(
+                        terms_L2[i][2] + terms_L2[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_L2 = sum_L2
 
                 for i in range(len(terms_L3)):
-                    sum_L3 += terms_L3[i][0] * math.cos(
-                        terms_L3[i][1] + terms_L3[i][2] * julian_ephemeris_millennium
+                    sum_L3 += terms_L3[i][1] * math.cos(
+                        terms_L3[i][2] + terms_L3[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_L3 = sum_L3
                 for i in range(len(terms_L4)):
-                    sum_L4 += terms_L4[i][0] * math.cos(
-                        terms_L4[i][1] + terms_L4[i][2] * julian_ephemeris_millennium
+                    sum_L4 += terms_L4[i][1] * math.cos(
+                        terms_L4[i][2] + terms_L4[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_L4 = sum_L4
 
                 for i in range(1):
-                    sum_L5 += 1 * math.cos(
-                        3.14 + 0 * julian_ephemeris_millennium
-                    )
+                    sum_L5 += 1 * math.cos(3.14 + 0 * julian_ephemeris_millennium)
 
                     self.sum_L5 = sum_L5
 
                 for i in range(len(terms_B0)):
-                    sum_B0 += terms_B0[i][0] * math.cos(
-                        terms_B0[i][1] + terms_B0[i][2] * julian_ephemeris_millennium
+                    sum_B0 += terms_B0[i][1] * math.cos(
+                        terms_B0[i][2] + terms_B0[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_B0 = sum_B0
 
                 for i in range(len(terms_B1)):
-                    sum_B1 += terms_B1[i][0] * math.cos(
-                        terms_B1[i][1] + terms_B1[i][2] * julian_ephemeris_millennium
+                    sum_B1 += terms_B1[i][1] * math.cos(
+                        terms_B1[i][2] + terms_B1[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_B1 = sum_B1
 
                 for i in range(len(terms_R0)):
-                    sum_R0 += terms_R0[i][0] * math.cos(
-                        terms_R0[i][1] + terms_R0[i][2] * julian_ephemeris_millennium
+                    sum_R0 += terms_R0[i][1] * math.cos(
+                        terms_R0[i][2] + terms_R0[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_R0 = sum_R0
 
                 for i in range(len(terms_R1)):
-                    sum_R1 += terms_R1[i][0] * math.cos(
-                        terms_R1[i][1] + terms_R1[i][2] * julian_ephemeris_millennium
+                    sum_R1 += terms_R1[i][1] * math.cos(
+                        terms_R1[i][2] + terms_R1[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_R1 = sum_R1
 
                 for i in range(len(terms_R2)):
-                    sum_R2 += terms_R2[i][0] * math.cos(
-                        terms_R2[i][1] + terms_R2[i][2] * julian_ephemeris_millennium
+                    sum_R2 += terms_R2[i][1] * math.cos(
+                        terms_R2[i][2] + terms_R2[i][3] * julian_ephemeris_millennium
                     )
 
                     self.sum_R2 = sum_R2
 
                 for i in range(len(terms_R3)):
-                    sum_R3 += terms_R3[i][0] * math.cos(
-                        terms_R3[i][1] + terms_R3[i][2] * julian_ephemeris_millennium
+                    sum_R3 += terms_R3[i][1] * math.cos(
+                        terms_R3[i][2] + terms_R3[i][2] * julian_ephemeris_millennium
                     )
 
                     self.sum_R3 = sum_R3
 
                 for i in range(1):
-                    sum_R4 += 4 * math.cos(
-                        2.56 + 6283.08 * julian_ephemeris_millennium
-                    )
+                    sum_R4 += 4 * math.cos(2.56 + 6283.08 * julian_ephemeris_millennium)
 
                     self.sum_R4 = sum_R4
 
                 L_count = np.sum([sum_L0, sum_L1, sum_L2, sum_L3, sum_L4, sum_L5])
-                B_count = np.sum([sum_B0,sum_B1])
-                R_count = np.sum([sum_R0,sum_R1,sum_R2,sum_R3,sum_R4])
+                B_count = np.sum([sum_B0, sum_B1])
+                R_count = np.sum([sum_R0, sum_R1, sum_R2, sum_R3, sum_R4])
 
                 self.L_count = L_count
                 self.B_count = B_count
                 self.R_count = R_count
 
-
-
             time.sleep(1)
 
     def earth_heliocentric_longitude(self):
         while True:
-
             sum_L0 = self.sum_L0
             sum_L1 = self.sum_L1
             sum_L2 = self.sum_L2
@@ -547,17 +536,24 @@ class SunPosition:
             julian_ephemeris_millenium = self.julian_ephemeris_millennium
 
             if julian_ephemeris_millenium and sum_L5 is not None:
-                heliocentric_Longitude = (sum_L0 + sum_L1 + sum_L2**2 + sum_L3**3 + sum_L4**4 + sum_L5**5) / 10**8
+                heliocentric_Longitude = (
+                    sum_L0
+                    + sum_L1
+                    + sum_L2**2
+                    + sum_L3**3
+                    + sum_L4**4
+                    + sum_L5**5
+                ) / 10**8
 
-                heliocentric_Longitude += (1.84972648**-8 * math.sin(math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)))
+                heliocentric_Longitude += 1.84972648**-8 * math.sin(
+                    math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)
+                )
                 heliocentric_Longitude = (heliocentric_Longitude * 180) / math.pi
                 heliocentric_Longitude %= 360
 
-                self.heliocentric_longitude = heliocentric_Longitude
+                self.heliocentric_Longitude = heliocentric_Longitude
 
             time.sleep(1)
-
-
 
     def show_all_values(self):
         while True:
@@ -586,32 +582,30 @@ class SunPosition:
             B_count = self.B_count
             R_count = self.R_count
 
-            heliocentric_longitude = self.heliocentric_longitude
+            heliocentric_Longitude = self.heliocentric_Longitude
 
             if (
-                    julian_day
-                    and julian_century
-                    and julian_ephemeris_day
-                    and julian_ephemeris_century
-                    and julian_ephemeris_millennium
-                    and sum_L0
-                    and sum_L1
-                    and sum_L2
-                    and sum_L3
-                    and sum_L4
-                    and sum_L5
-                    and sum_B0
-                    and sum_B1
-                    and sum_R0
-                    and sum_R1
-                    and sum_R2
-                    and sum_R3
-                    and sum_R4
-                    and L_count
-                    and B_count
-                    and R_count
-                    and heliocentric_longitude
-                    is not None
+                julian_day
+                and julian_century
+                and julian_ephemeris_day
+                and julian_ephemeris_century
+                and julian_ephemeris_millennium
+                and sum_L0
+                and sum_L1
+                and sum_L2
+                and sum_L3
+                and sum_L4
+                and sum_L5
+                and sum_B0
+                and sum_B1
+                and sum_R0
+                and sum_R1
+                and sum_R2
+                and sum_R3
+                and sum_R4
+                and L_count
+                and B_count
+                and R_count is not None
             ):
                 print("Values: ")
                 print(f"Julian Day: {julian_day}")
@@ -633,7 +627,7 @@ class SunPosition:
                 print(f"Sum of L4: {sum_L4}")
                 print(f"Sum of L5: {sum_L5}")
                 print(f"Sum of B0: {sum_B0}")
-                print(f'Sum of B1: {sum_B1}')
+                print(f"Sum of B1: {sum_B1}")
                 print(f"Sum of R0: {sum_R0}")
                 print(f"Sum of R1: {sum_R1}")
                 print(f"Sum of R2: {sum_R2}")
@@ -642,7 +636,8 @@ class SunPosition:
                 print(f"L Sum: {L_count}")
                 print(f"B Sum: {B_count}")
                 print(f"R Sum: {R_count}")
-                print(f"Heliocentric Longitude: {heliocentric_longitude}")
+                print(f"Heliocentric Longitude: {heliocentric_Longitude}")
+
             time.sleep(1)
 
 
@@ -669,7 +664,9 @@ earth_periodic_terms_sum_thread = threading.Thread(
 )
 earth_periodic_terms_sum_thread.start()
 
-earth_heliocentric_longitude_thread = threading.Thread(target=sun_position.earth_heliocentric_longitude)
+earth_heliocentric_longitude_thread = threading.Thread(
+    target=sun_position.earth_heliocentric_longitude
+)
 earth_heliocentric_longitude_thread.start()
 
 
