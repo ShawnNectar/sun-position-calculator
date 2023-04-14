@@ -48,8 +48,6 @@ hidden_from_streamlit = """
 ║     Geo_Lat = - B                            ║     
 ║                                              ║
 ╚══════════════════════════════════════════════╝
-Geocentric Longitude (degrees)
-Geo_Lat = L + 180
 """
 
 
