@@ -605,6 +605,7 @@ class SunPosition:
                 and sum_R4
                 and L_count
                 and B_count
+                and heliocentric_longitude
                 and R_count is not None
             ):
                 print("Values: ")
