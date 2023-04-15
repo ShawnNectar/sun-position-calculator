@@ -537,14 +537,15 @@ class SunPosition:
             julian_ephemeris_millennium = self.julian_ephemeris_millennium
 
             if julian_ephemeris_millennium and sum_L5 is not None:
-                heliocentric_longitude = (
-                    sum_L0
-                    + sum_L1 * julian_ephemeris_millennium
-                    + sum_L2 * julian_ephemeris_millennium**2
-                    + sum_L3 * julian_ephemeris_millennium**3
-                    + sum_L4 * julian_ephemeris_millennium**4
-                    + sum_L5 * julian_ephemeris_millennium**5
-                ) / 10**8
+                heliocentric_longitude = np.sum([
+                    sum_L0,
+                    np.multiply(sum_L1, julian_ephemeris_millennium),
+                    np.multiply(sum_L2, np.power(julian_ephemeris_millennium, 2)),
+                    np.multiply(sum_L3, np.power(julian_ephemeris_millennium, 3)),
+                    np.multiply(sum_L4, np.power(julian_ephemeris_millennium, 4)),
+                    np.multiply(sum_L5, np.power(julian_ephemeris_millennium, 5))
+                ], axis=0) / np.power(10, 8)
+
 
                 heliocentric_longitude += 1.84972648**-8 * math.sin(
                     math.radians(125.4 - 1934.136 * julian_ephemeris_millennium)
