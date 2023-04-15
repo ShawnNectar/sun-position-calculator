@@ -281,14 +281,26 @@ class ValuesUsed:
         self.sunset = 0.0
 
 
+values_import = ValuesUsed()
 def timezone_finder():
     tf = TimezoneFinder()
-    while True:
-        values_import = ValuesUsed()
 
-        latitude = values_import.latitude
-        longitude = values_import.longitude
-        timezone = tf.timezone_at(lat=latitude, lng=longitude)
-        timezone = timezone
+    latitude = values_import.latitude
+    longitude = values_import.longitude
+    timezone = tf.timezone_at(lat=latitude, lng=longitude)
+    timezone = timezone
 
 timezone_finder()
+
+def utc_time_finder():
+        utc_time = datetime.now(tz=pytz.UTC)
+
+        values_import.year = utc_time.year
+        values_import.month = utc_time.month
+        values_import.day = utc_time.day
+        values_import.hour = utc_time.hour
+        values_import.minute = utc_time.minute
+        values_import.second = utc_time.second
+        values_import.decimal_hours = values_import.hour + values_import.minute / 60 + values_import.second / 3600
+
+utc_time_finder()
