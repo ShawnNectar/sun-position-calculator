@@ -531,20 +531,20 @@ class SunPosition:
             sum_L4 = self.sum_L4
             sum_L5 = self.sum_L5
 
-            julian_ephemeris_millenium = self.julian_ephemeris_millennium
+            julian_ephemeris_millennium = self.julian_ephemeris_millennium
 
-            if julian_ephemeris_millenium and sum_L5 is not None:
+            if julian_ephemeris_millennium and sum_L5 is not None:
                 heliocentric_longitude = (
                     sum_L0
-                    + sum_L1
-                    + sum_L2**2
-                    + sum_L3**3
-                    + sum_L4**4
-                    + sum_L5**5
+                    + sum_L1 * julian_ephemeris_millennium
+                    + sum_L2 * julian_ephemeris_millennium**2
+                    + sum_L3 * julian_ephemeris_millennium**3
+                    + sum_L4 * julian_ephemeris_millennium**4
+                    + sum_L5 * julian_ephemeris_millennium**5
                 ) / 10**8
 
                 heliocentric_longitude += 1.84972648**-8 * math.sin(
-                    math.radians(125.4 - 1934.136 * julian_ephemeris_millenium)
+                    math.radians(125.4 - 1934.136 * julian_ephemeris_millennium)
                 )
                 heliocentric_longitude = (heliocentric_longitude * 180) / math.pi
                 heliocentric_longitude %= 360
@@ -552,6 +552,8 @@ class SunPosition:
                 self.heliocentric_longitude = heliocentric_longitude
 
             time.sleep(1)
+
+
 
     def show_all_values(self):
         while True:
