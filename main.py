@@ -377,7 +377,7 @@ class SunPosition:
             if julian_day is not None:
                 julian_ephemeris_day = np.add(julian_day, np.divide(37, 86400))
 
-                julian_ephemeris_century = (julian_ephemeris_day - 2451545) / 36525
+                julian_ephemeris_century = np.divide(np.subtract(julian_ephemeris_day, 2451545), 36525)
 
                 self.julian_ephemeris_century = julian_ephemeris_century
                 self.julian_ephemeris_day = julian_ephemeris_day
