@@ -355,7 +355,7 @@ def run_all():
             values_import.minute = utc_time.minute
             values_import.second = utc_time.second
             values_import.decimal_day = (
-                values_import.hour + values_import.minute / 60 + values_import.second / 3600
+                    values_import.hour + values_import.minute / 60 + values_import.second / 3600
             )
 
 
@@ -364,15 +364,15 @@ def run_all():
 
         def julian_day_century():
             if (
-                values_import.year
-                and values_import.month
-                and values_import.decimal_day is not None
+                    values_import.year
+                    and values_import.month
+                    and values_import.decimal_day is not None
             ):
                 jd = (
-                    int(365.25 * (values_import.year + 4716.0))
-                    + int(30.6001 * (values_import.month + 1))
-                    + values_import.decimal_day
-                    - 1524.5
+                        int(365.25 * (values_import.year + 4716.0))
+                        + int(30.6001 * (values_import.month + 1))
+                        + values_import.decimal_day
+                        - 1524.5
                 )
 
                 jc = (jd - 2451545.0) / 36525.0
@@ -412,6 +412,12 @@ def run_all():
 
         jce, jde, jme = julian_ephemeris_day_century_millennium(jd, delta_t)
 
+        def set_to_range(var, min_interval, max_interval):
+            var = var - max_interval * np.floor(var / max_interval)
+            if (var < min_interval):
+                var = var + max_interval
+            return var
+
         def earth_heliocentric_longitude(jme, L0_terms, L1_terms, L2_terms, L3_terms, L4_terms, L5_terms):
 
             A0Pos = L0_terms[:, 0]
@@ -446,7 +452,8 @@ def run_all():
             L5_sum = np.sum(A5Pos * np.cos(B5Pos + (C5Pos * jme)))
 
             heliocentric_longitude = (L0_sum + (L1_sum * jme) + (L2_sum * jme **2) + (L3_sum * jme **3) + (L4_sum * jme **4) + (L5_sum * jme **5)) / 1e8
-            heliocentric_longitude %= 360
+            heliocentric_longitude = heliocentric_longitude * 180 / math.pi
+            heliocentric_longitude = set_to_range(heliocentric_longitude, 0, 360)
             print(heliocentric_longitude)
 
             return heliocentric_longitude
@@ -467,6 +474,7 @@ def run_all():
                     ax.grid(True)
 
                     plt.show()
+                time.sleep(5)
 
         value_plot(heliocentric_longitude)
         time.sleep(1)
