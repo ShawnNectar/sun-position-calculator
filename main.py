@@ -346,7 +346,8 @@ class SunPosition:
             minute = utc_time.minute
             second = utc_time.second
 
-            decimal_hours = hour + minute / 60 + second / 3600
+            decimal_hours = np.add(np.add(hour, np.divide(minute, 60)), np.divide(second, 3600))
+
 
             julian_day = np.add(
                 np.add(
