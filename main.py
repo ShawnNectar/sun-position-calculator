@@ -620,16 +620,13 @@ class SunPosition:
             ):
                 print("Values: ")
                 print(f"Julian Day: {julian_day}")
-                print(f"Julian Century: {julian_century}")
-
-                print("")
+                print(f"Julian Century: {julian_century}\n")
 
                 print(f"Julian Ephemeris Day: {julian_ephemeris_day}")
-                print(f"Julian Ephemeris Century: {julian_ephemeris_century}")
+                print(f"Julian Ephemeris Century: {julian_ephemeris_century}\n")
 
-                print("")
 
-                print(f"Julian Ephemeris Millennium: {julian_ephemeris_millennium}")
+                print(f"Julian Ephemeris Millennium: {julian_ephemeris_millennium}\n")
 
                 print(f"Sum of L0: {sum_L0}")
                 print(f"Sum of L1: {sum_L1}")
@@ -646,7 +643,8 @@ class SunPosition:
                 print(f"Sum of R4: {sum_R4}")
                 print(f"L Sum: {L_count}")
                 print(f"B Sum: {B_count}")
-                print(f"R Sum: {R_count}")
+                print(f"R Sum: {R_count}\n")
+
                 print(f"Heliocentric Longitude: {heliocentric_longitude}")
 
             time.sleep(1)
