@@ -388,7 +388,8 @@ class SunPosition:
         while True:
             julian_ephemeris_century = self.julian_ephemeris_century
             if julian_ephemeris_century is not None:
-                julian_ephemeris_millennium = julian_ephemeris_century / 10
+                julian_ephemeris_millennium = np.divide(julian_ephemeris_century, 10)
+
 
                 self.julian_ephemeris_millennium = julian_ephemeris_millennium
 
