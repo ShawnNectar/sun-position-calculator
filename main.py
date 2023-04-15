@@ -663,7 +663,6 @@ class SunPosition:
                 ax.set_rmax(1.2)
                 ax.grid(True)
 
-                print("Showing plot...")
                 plt.show()
 
             time.sleep(5)
