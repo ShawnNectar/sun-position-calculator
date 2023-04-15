@@ -337,6 +337,8 @@ def julian_day():
                 + values_import.decimal_day
                 - 1524.5
         )
+
+        print(f"Julian Day: {jd}")
         return jd
 
 jd = julian_day()
@@ -344,11 +346,33 @@ jd = julian_day()
 def julian_century(jd):
     if jd is not None:
         jc = (jd - 2451545.0) / 36525.0
-        print(jc)
+        print(f"Julian Century: {jc}")
     return jc
 
 julian_century(jd)
 
+# Valid until 2050
+def delta_t_value():
+    t = (values_import.year - 1820) / 100
+    delta_t = 62.92 + 0.32217 * t + 0.005589 * t**2
+    print(f"Delta T = {delta_t}")
+    return delta_t
 
+delta_t = delta_t_value()
 
+def julian_ephemeris_day(jd, delta_t):
+    if jd is not None:
+        jde = jd + (delta_t / 86400.0)
+        print(f"Julian Ephemeris Day: {jde}")
+    return jde
+
+jde = julian_ephemeris_day(jd, delta_t)
+
+def julian_ephemeris_century(jde):
+    if jde is not None:
+        jce = (jde - 2451545.0) / 36525.0
+        print(f"Julian Ephemeris Century: {jce}")
+    return jce
+
+jce = julian_ephemeris_century(jde)
 
