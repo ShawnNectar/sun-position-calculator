@@ -21,6 +21,7 @@ class SunPosition:
         self.jde = 0
         self.jc = 0
         self.jce = 0
+        self.jme = 0
 
         # Dependencies Main
         self.year = 0
@@ -99,6 +100,7 @@ class SunPosition:
                 # Calculating Julian Ephemeris Day
                 jde = jd + (delta_t / 86400)
 
+                # Exporting
                 self.delta_t = delta_t
                 self.jd = jd
                 self.jde = jde
@@ -107,7 +109,7 @@ class SunPosition:
 
 
 # Julian Century and Julian Ephemeris Century and Julian Ephemeris Millennium
-    def julian_century_and_ephemeris_century(self):
+    def julian_century_and_ephemeris_century_and_ephemeris_millennium(self):
         while True:
             #Importing dependencies
             jd = self.jd
@@ -115,7 +117,7 @@ class SunPosition:
 
             jc = self.jc
             jce = self.jce
-
+            jme = self.jme
 
             if jd and jde != 0:
                 # Calculating Julian Century
@@ -124,9 +126,18 @@ class SunPosition:
                 # Calculating Julian Ephemeris Century
                 jce = (jde - 2451545) / 36525
 
+                # Exporting
                 self.jc = jc
                 self.jce = jce
 
+                if jce != 0:
+                    # Calculating Julian Ephemeris Millenniun
+                    jme = jce / 10
+
+                    # Exporting
+                    self.jme = jme
+
+            time.sleep(1)
 
 
 # MultiThreading
@@ -137,3 +148,6 @@ get_timezone_thread.start()
 
 julian_day_and_ephemeris_day_thread = threading.Thread(target=sun_position.julian_day_and_ephemeris_day)
 julian_day_and_ephemeris_day_thread.start()
+
+julian_century_and_ephemeris_century_and_ephemeris_millennium_thread = threading.Thread(target=sun_position.julian_century_and_ephemeris_century_and_ephemeris_millennium)
+julian_century_and_ephemeris_century_and_ephemeris_millennium_thread.start()
