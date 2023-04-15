@@ -299,14 +299,14 @@ class ValuesUsed:
 
 values_import = ValuesUsed()
 
-
 def timezone_finder():
-    tf = TimezoneFinder()
+    if values_import.latitude and values_import.longitude is not None:
+        tf = TimezoneFinder()
 
-    latitude = values_import.latitude
-    longitude = values_import.longitude
-    timezone = tf.timezone_at(lat=latitude, lng=longitude)
-    timezone = timezone
+        latitude = values_import.latitude
+        longitude = values_import.longitude
+        timezone = tf.timezone_at(lat=latitude, lng=longitude)
+        timezone = timezone
 
 
 timezone_finder()
@@ -330,12 +330,25 @@ utc_time_finder()
 
 
 def julian_day():
-    jd = (
-        int(365.25 * (values_import.year + 4716.0))
-        + int(30.6001 * (values_import.month + 1))
-        + values_import.decimal_day
-        - 1524.5
-    )
+    if values_import.year and values_import.month and values_import.decimal_day is not None:
+        jd = (
+                int(365.25 * (values_import.year + 4716.0))
+                + int(30.6001 * (values_import.month + 1))
+                + values_import.decimal_day
+                - 1524.5
+        )
+        return jd
+
+jd = julian_day()
+
+def julian_century(jd):
+    if jd is not None:
+        jc = (jd - 2451545.0) / 36525.0
+        print(jc)
+    return jc
+
+julian_century(jd)
 
 
-julian_day()
+
+
