@@ -38,8 +38,10 @@ class SunPosition:
         # Main
         self.heliocentric_longitude = 0
         self.heliocentric_latitude = 0
+        self.heliocentric_position_radius = 0
 
-    # Dependencies Date Get
+
+# Dependencies Date Get
     def get_timezone_and_utc(self):
         tf = TimezoneFinder()
         while True:
@@ -345,9 +347,9 @@ class SunPosition:
                 heliocentric_longitude = heliocentric_longitude * 180 / math.pi
                 heliocentric_longitude %= 360
 
+                # Exporting
                 self.heliocentric_longitude = heliocentric_longitude
 
-                print(f"Heliocentric Longitude: {heliocentric_longitude}\n")
 
             time.sleep(1)
 
@@ -365,7 +367,6 @@ class SunPosition:
         B1_terms = np.array(
             [[9.00000e00, 3.90000e00, 5.50755e03], [6.00000e00, 1.73000e00, 5.22369e03]]
         )
-
 
         A0POS = B0_terms[:, 0]
         B0POS = B0_terms[:, 1]
@@ -385,12 +386,166 @@ class SunPosition:
 
                 heliocentric_latitude = (L0_sum + (L1_sum * jme)) / 1e8
                 heliocentric_latitude = heliocentric_latitude * 180 / math.pi
+
                 heliocentric_latitude %= 360
                 # Exporting
                 self.heliocentric_latitude = heliocentric_latitude
-                print(f"Heliocentric Latitude: {heliocentric_latitude}\n")
             time.sleep(1)
 
+    def earth_heliocentric_position_radius(self):
+        R0_terms = np.array(
+            [
+                [1.00013989e08, 0.00000000e00, 0.00000000e00],
+                [1.67070000e06, 3.09846350e00, 6.28307585e03],
+                [1.39560000e04, 3.05525000e00, 1.25661517e04],
+                [3.08400000e03, 5.19850000e00, 7.77137715e04],
+                [1.62800000e03, 1.17390000e00, 5.75338490e03],
+                [1.57600000e03, 2.84690000e00, 7.86041940e03],
+                [9.25000000e02, 5.45300000e00, 1.15067700e04],
+                [5.42000000e02, 4.56400000e00, 3.93021000e03],
+                [4.72000000e02, 3.66100000e00, 5.88492700e03],
+                [3.46000000e02, 9.64000000e-01, 5.50755300e03],
+                [3.29000000e02, 5.90000000e00, 5.22369400e03],
+                [3.07000000e02, 2.99000000e-01, 5.57314300e03],
+                [2.43000000e02, 4.27300000e00, 1.17906290e04],
+                [2.12000000e02, 5.84700000e00, 1.57734400e03],
+                [1.86000000e02, 5.02200000e00, 1.09770790e04],
+                [1.75000000e02, 3.01200000e00, 1.88492280e04],
+                [1.10000000e02, 5.05500000e00, 5.48677800e03],
+                [9.80000000e01, 8.90000000e-01, 6.06978000e03],
+                [8.60000000e01, 5.69000000e00, 1.57208400e04],
+                [8.60000000e01, 1.27000000e00, 1.61000690e05],
+                [8.50000000e01, 2.70000000e-01, 1.72601500e04],
+                [6.30000000e01, 9.20000000e-01, 5.29690000e02],
+                [5.70000000e01, 2.01000000e00, 8.39968500e04],
+                [5.60000000e01, 5.24000000e00, 7.14307000e04],
+                [4.90000000e01, 3.25000000e00, 2.54431000e03],
+                [4.70000000e01, 2.58000000e00, 7.75520000e02],
+                [4.50000000e01, 5.54000000e00, 9.43776000e03],
+                [4.30000000e01, 6.01000000e00, 6.27596000e03],
+                [3.90000000e01, 5.36000000e00, 4.69400000e03],
+                [3.80000000e01, 2.39000000e00, 8.82739000e03],
+                [3.70000000e01, 8.30000000e-01, 1.96510500e04],
+                [3.70000000e01, 4.90000000e00, 1.21395500e04],
+                [3.60000000e01, 1.67000000e00, 1.20364600e04],
+                [3.50000000e01, 1.84000000e00, 2.94246000e03],
+                [3.30000000e01, 2.40000000e-01, 7.08490000e03],
+                [3.20000000e01, 1.80000000e-01, 5.08863000e03],
+                [3.20000000e01, 1.78000000e00, 3.98150000e02],
+                [2.80000000e01, 1.21000000e00, 6.28660000e03],
+                [2.80000000e01, 1.90000000e00, 6.27955000e03],
+                [2.60000000e01, 4.59000000e00, 1.04473900e04],
+            ]
+        )
+
+        R1_terms = np.array(
+            [
+                [1.03019000e05, 1.10749000e00, 6.28307585e03],
+                [1.72100000e03, 1.06440000e00, 1.25661517e04],
+                [7.02000000e02, 3.14200000e00, 0.00000000e00],
+                [3.20000000e01, 1.02000000e00, 1.88492300e04],
+                [3.10000000e01, 2.84000000e00, 5.50755000e03],
+                [2.50000000e01, 1.32000000e00, 5.22369000e03],
+                [1.80000000e01, 1.42000000e00, 1.57734000e03],
+                [1.00000000e01, 5.91000000e00, 1.09770800e04],
+                [9.00000000e00, 1.42000000e00, 6.27596000e03],
+                [9.00000000e00, 2.70000000e-01, 5.48678000e03],
+            ]
+        )
+
+        R2_terms = np.array(
+            [
+                [4.3590000e03, 5.7846000e00, 6.2830758e03],
+                [1.2400000e02, 5.5790000e00, 1.2566152e04],
+                [1.2000000e01, 3.1400000e00, 0.0000000e00],
+                [9.0000000e00, 3.6300000e00, 7.7713770e04],
+                [6.0000000e00, 1.8700000e00, 5.5731400e03],
+                [3.0000000e00, 5.4700000e00, 1.8849000e04],
+            ]
+        )
+
+        R3_terms = np.array(
+            [
+                [1.450000e02, 4.273000e00, 6.283076e03],
+                [7.000000e00, 3.920000e00, 1.256615e04],
+            ]
+        )
+
+        R4_terms = np.array([4.00000e00, 2.56000e00, 6.28308e03])
+
+        A0POS = R0_terms[:, 0]
+        B0POS = R0_terms[:, 1]
+        C0POS = R0_terms[:, 2]
+
+        A1POS = R1_terms[:, 0]
+        B1POS = R1_terms[:, 1]
+        C1POS = R1_terms[:, 2]
+
+        A2POS = R2_terms[:, 0]
+        B2POS = R2_terms[:, 1]
+        C2POS = R2_terms[:, 2]
+
+        A3POS = R3_terms[:, 0]
+        B3POS = R3_terms[:, 1]
+        C3POS = R3_terms[:, 2]
+
+        A4POS = R4_terms[0]
+        B4POS = R4_terms[1]
+        C4POS = R4_terms[2]
+
+        while True:
+            # Importing Dependencies
+            jme = self.jme
+
+            if jme != 0:
+                L0_sum = np.sum(A0POS * np.cos(B0POS + (C0POS * jme)))
+                L1_sum = np.sum(A1POS * np.cos(B1POS + (C1POS * jme)))
+                L2_sum = np.sum(A2POS * np.cos(B2POS + (C2POS * jme)))
+                L3_sum = np.sum(A3POS * np.cos(B3POS + (C3POS * jme)))
+                L4_sum = np.sum(A4POS * np.cos(B4POS + (C4POS * jme)))
+
+                heliocentric_position_radius = (L0_sum + (L1_sum * jme) + (L2_sum * jme**2) + (L3_sum * jme**3) + (L4_sum * jme**4)) / 1e8
+
+                # Exporting
+                self.heliocentric_position_radius = heliocentric_position_radius
+            time.sleep(1)
+
+    def show_all_values(self):
+        while True:
+            # Dependencies Date
+            latitude = self.latitude
+            longitude = self.longitude
+            timezone = self.timezone
+
+            # Julian Values
+            jd = self.jd
+            jde = self.jde
+            jc = self.jc
+            jce = self.jce
+            jme = self.jme
+
+            # Dependencies Main
+            year = self.year
+            month = self.month
+            day = self.day
+            hour = self.hour
+            minute = self.minute
+            second = self.second
+            day_decimal = self.day_decimal
+            delta_t = self.delta_t
+            utc_time = self.utc_time
+
+            # Main
+            heliocentric_longitude = self.heliocentric_longitude
+            heliocentric_latitude = self.heliocentric_latitude
+            heliocentric_position_radius = self.heliocentric_position_radius
+
+            if heliocentric_longitude and heliocentric_latitude and heliocentric_position_radius != 0:
+                print("Values: ")
+                print(f"Heliocentric Longitude: {heliocentric_longitude}")
+                print(f"Heliocentric Latitude: {heliocentric_latitude}")
+                print(f"Heliocentric Position Radius: {heliocentric_position_radius}")
+            time.sleep(1)
 
 # MultiThreading
 sun_position = SunPosition()
@@ -413,5 +568,13 @@ earth_heliocentric_longitude_thread = threading.Thread(
 )
 earth_heliocentric_longitude_thread.start()
 
-earth_heliocentric_latitude_thread = threading.Thread(target=sun_position.earth_heliocentric_latitude)
+earth_heliocentric_latitude_thread = threading.Thread(
+    target=sun_position.earth_heliocentric_latitude
+)
 earth_heliocentric_latitude_thread.start()
+
+earth_heliocentric_position_radius_thread = threading.Thread(target=sun_position.earth_heliocentric_position_radius)
+earth_heliocentric_position_radius_thread.start()
+
+show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
+show_all_values_thread.start()
