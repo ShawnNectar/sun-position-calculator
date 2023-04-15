@@ -291,3 +291,4 @@ def timezone_finder():
         timezone = tf.timezone_at(lat=latitude, lng=longitude)
         timezone = timezone
 
+timezone_finder()
