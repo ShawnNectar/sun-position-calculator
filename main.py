@@ -376,3 +376,11 @@ def julian_ephemeris_century(jde):
 
 jce = julian_ephemeris_century(jde)
 
+def julian_ephemeris_millennium(jce):
+    if jce is not None:
+        jme = jce / 10
+    return jme
+
+jme = julian_ephemeris_millennium(jde)
+
+
