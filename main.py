@@ -511,7 +511,8 @@ class SunPosition:
                     self.sum_R3 = sum_R3
 
                 for i in range(1):
-                    sum_R4 += 4 * math.cos(2.56 + 6283.08 * julian_ephemeris_millennium)
+                    sum_R4 = np.add(sum_R4, np.multiply(4, np.cos(np.add(2.56, np.multiply(6283.08, julian_ephemeris_millennium)))))
+
 
                     self.sum_R4 = sum_R4
 
