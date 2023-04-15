@@ -329,7 +329,7 @@ def utc_time_finder():
 utc_time_finder()
 
 
-def julian_day():
+def julian_day_century():
     if values_import.year and values_import.month and values_import.decimal_day is not None:
         jd = (
                 int(365.25 * (values_import.year + 4716.0))
@@ -338,18 +338,15 @@ def julian_day():
                 - 1524.5
         )
 
-        print(f"Julian Day: {jd}")
-        return jd
-
-jd = julian_day()
-
-def julian_century(jd):
-    if jd is not None:
         jc = (jd - 2451545.0) / 36525.0
-        print(f"Julian Century: {jc}")
-    return jc
 
-julian_century(jd)
+        print(f"Julian Day: {jd}")
+        print(f"Julian Century: {jc}")
+
+        return jd, jc
+
+jd, jdc = julian_day_century()
+
 
 # Valid until 2050
 def delta_t_value():
@@ -360,27 +357,22 @@ def delta_t_value():
 
 delta_t = delta_t_value()
 
-def julian_ephemeris_day(jd, delta_t):
-    if jd is not None:
+
+def julian_ephemeris_day_century_millennium(jd, delta_t):
+    if delta_t is not None:
         jde = jd + (delta_t / 86400.0)
-        print(f"Julian Ephemeris Day: {jde}")
-    return jde
-
-jde = julian_ephemeris_day(jd, delta_t)
-
-def julian_ephemeris_century(jde):
-    if jde is not None:
         jce = (jde - 2451545.0) / 36525.0
-        print(f"Julian Ephemeris Century: {jce}")
-    return jce
-
-jce = julian_ephemeris_century(jde)
-
-def julian_ephemeris_millennium(jce):
-    if jce is not None:
         jme = jce / 10
-    return jme
 
-jme = julian_ephemeris_millennium(jde)
+        print(f"Julian Ephemeris Day: {jde}")
+        print(f"Julian Ephemeris Century: {jce}")
+        print(f"Julian Ephemeris Millennium: {jme}")
+
+    return jce, jde, jme
+
+jce, jde, jme = julian_ephemeris_day_century_millennium(jd, delta_t)
+
+
+
 
 
