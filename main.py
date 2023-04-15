@@ -35,6 +35,10 @@ class SunPosition:
         self.delta_t = 0
         self.utc_time = 0
 
+        # Main
+        self.heliocentric_longitude = 0
+        self.heliocentric_latitude = 0
+
     # Dependencies Date Get
     def get_timezone_and_utc(self):
         tf = TimezoneFinder()
@@ -323,22 +327,69 @@ class SunPosition:
             # Importing Dependencies
             jme = self.jme
             if jme != 0:
-                L0_sum = np.sum(A0POS*np.cos(B0POS + (C0POS * jme)))
-                L1_sum = np.sum(A1POS*np.cos(B1POS + (C1POS * jme)))
-                L2_sum = np.sum(A2POS*np.cos(B2POS + (C2POS * jme)))
-                L3_sum = np.sum(A3POS*np.cos(B3POS + (C3POS * jme)))
-                L4_sum = np.sum(A4POS*np.cos(B4POS + (C4POS * jme)))
-                L5_sum = np.sum(A5POS*np.cos(B5POS + (C5POS * jme)))
+                L0_sum = np.sum(A0POS * np.cos(B0POS + (C0POS * jme)))
+                L1_sum = np.sum(A1POS * np.cos(B1POS + (C1POS * jme)))
+                L2_sum = np.sum(A2POS * np.cos(B2POS + (C2POS * jme)))
+                L3_sum = np.sum(A3POS * np.cos(B3POS + (C3POS * jme)))
+                L4_sum = np.sum(A4POS * np.cos(B4POS + (C4POS * jme)))
+                L5_sum = np.sum(A5POS * np.cos(B5POS + (C5POS * jme)))
 
-                heliocentric_longitude = (L0_sum + (L1_sum * jme) + (L2_sum * jme **2) + (L3_sum * jme **3) + (L4_sum * jme **4) + (L5_sum * jme **5)) / 1e8
+                heliocentric_longitude = (
+                    L0_sum
+                    + (L1_sum * jme)
+                    + (L2_sum * jme**2)
+                    + (L3_sum * jme**3)
+                    + (L4_sum * jme**4)
+                    + (L5_sum * jme**5)
+                ) / 1e8
                 heliocentric_longitude = heliocentric_longitude * 180 / math.pi
                 heliocentric_longitude %= 360
 
-                print(heliocentric_longitude)
+                self.heliocentric_longitude = heliocentric_longitude
+
+                print(f"Heliocentric Longitude: {heliocentric_longitude}\n")
 
             time.sleep(1)
 
+    def earth_heliocentric_latitude(self):
+        B0_terms = np.array(
+            [
+                [2.8000000e02, 3.1990000e00, 8.4334662e04],
+                [1.0200000e02, 5.4220000e00, 5.5075530e03],
+                [8.0000000e01, 3.8800000e00, 5.2236900e03],
+                [4.4000000e01, 3.7000000e00, 2.3528700e03],
+                [3.2000000e01, 4.0000000e00, 1.5773400e03],
+            ]
+        )
 
+        B1_terms = np.array(
+            [[9.00000e00, 3.90000e00, 5.50755e03], [6.00000e00, 1.73000e00, 5.22369e03]]
+        )
+
+
+        A0POS = B0_terms[:, 0]
+        B0POS = B0_terms[:, 1]
+        C0POS = B0_terms[:, 2]
+
+        A1POS = B1_terms[:, 0]
+        B1POS = B1_terms[:, 1]
+        C1POS = B1_terms[:, 2]
+
+        while True:
+            # Importing Dependencies
+            jme = self.jme
+
+            if jme != 0:
+                L0_sum = np.sum(A0POS * np.cos(B0POS + (C0POS * jme)))
+                L1_sum = np.sum(A1POS * np.cos(B1POS + (C1POS * jme)))
+
+                heliocentric_latitude = (L0_sum + (L1_sum * jme)) / 1e8
+                heliocentric_latitude = heliocentric_latitude * 180 / math.pi
+                heliocentric_latitude %= 360
+                # Exporting
+                self.heliocentric_latitude = heliocentric_latitude
+                print(f"Heliocentric Latitude: {heliocentric_latitude}\n")
+            time.sleep(1)
 
 
 # MultiThreading
@@ -357,5 +408,10 @@ julian_century_and_ephemeris_century_and_ephemeris_millennium_thread = threading
 )
 julian_century_and_ephemeris_century_and_ephemeris_millennium_thread.start()
 
-earth_heliocentric_longitude_thread = threading.Thread(target=sun_position.earth_heliocentric_longitude)
+earth_heliocentric_longitude_thread = threading.Thread(
+    target=sun_position.earth_heliocentric_longitude
+)
 earth_heliocentric_longitude_thread.start()
+
+earth_heliocentric_latitude_thread = threading.Thread(target=sun_position.earth_heliocentric_latitude)
+earth_heliocentric_latitude_thread.start()
