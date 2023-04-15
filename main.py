@@ -80,6 +80,7 @@ class SunPosition:
             day_decimal = self.day_decimal
             delta_t = self.delta_t
             utc_time = self.utc_time
+
             jd = self.jd
             jde = self.jde
 
@@ -106,6 +107,26 @@ class SunPosition:
 
 
 # Julian Century and Julian Ephemeris Century and Julian Ephemeris Millennium
+    def julian_century_and_ephemeris_century(self):
+        while True:
+            #Importing dependencies
+            jd = self.jd
+            jde = self.jde
+
+            jc = self.jc
+            jce = self.jce
+
+
+            if jd and jde != 0:
+                # Calculating Julian Century
+                jc = (jd - 2451545) / 36525
+
+                # Calculating Julian Ephemeris Century
+                jce = (jde - 2451545) / 36525
+
+                self.jc = jc
+                self.jce = jce
+
 
 
 # MultiThreading
