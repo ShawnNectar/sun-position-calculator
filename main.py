@@ -55,9 +55,6 @@ class SunPosition:
 
                 print(utc_time)
 
-
-
-
             time.sleep(1)
 
 
