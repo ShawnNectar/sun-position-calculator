@@ -3,6 +3,8 @@ import threading
 import time
 from datetime import datetime
 
+import matplotlib.pyplot as plt
+
 import numpy as np
 import pytz
 from timezonefinder import TimezoneFinder
@@ -641,6 +643,26 @@ class SunPosition:
 
             time.sleep(1)
 
+    def value_plot(self):
+        while True:
+            heliocentric_longitude = self.heliocentric_longitude
+
+            if heliocentric_longitude is not None:
+
+                heliocentric_longitude_radian = np.radians(heliocentric_longitude)
+
+                figure = plt.figure()
+                ax = figure.add_subplot(111, projection='polar')
+                ax.plot(heliocentric_longitude_radian, 1, 'ro')
+                ax.set_rmax(1.2)
+                ax.grid(True)
+
+                print("Showing plot...")
+                plt.show()
+
+            time.sleep(5)
+
+
 
 sun_position = SunPosition()
 
@@ -669,6 +691,9 @@ earth_heliocentric_longitude_thread = threading.Thread(
     target=sun_position.earth_heliocentric_longitude
 )
 earth_heliocentric_longitude_thread.start()
+
+value_plot_thread = threading.Thread(target=sun_position.value_plot)
+value_plot_thread.start()
 
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
