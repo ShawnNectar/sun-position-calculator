@@ -832,7 +832,7 @@ class SunPosition:
             time.sleep(1)
 
 
-# MultiThreading
+# MultiThreading of each function inside the class
 sun_position = SunPosition()
 
 get_timezone_thread = threading.Thread(target=sun_position.get_timezone_and_utc)
