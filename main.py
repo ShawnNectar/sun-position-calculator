@@ -544,10 +544,13 @@ class SunPosition:
                 X0 = 297.85036 + 445267.111480 * jce - 0.0019142 * jce**2 + jce**3 / 189474
                 # Calculating mean anomaly of the sun (X1)
                 X1 = 357.52772 + 35999.050340 * jce - 0.0001603 * jce**2 - jce**3 / 300000
+                # Calculating Mean Anomaly of the Moon (X2)
+                X2 = 134.96298 + 477198.867398 * jce - 0.0086972 * jce**2 + jce**3 / 56250
 
 
                 self.X0 = X0
                 self.X1 = X1
+                self.X2 = X2
 
             time.sleep(1)
 
@@ -608,6 +611,8 @@ class SunPosition:
 
                 print(f"Mean Elongation of Moon from Sun: {X0}°")
                 print(f"Mean Anomaly of the Sun: {X1}°")
+                print(f"Mean Anomaly of the Moon: {X2}°")
+
 
                 time.sleep(1)
             time.sleep(1)
