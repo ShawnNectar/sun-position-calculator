@@ -42,6 +42,12 @@ class SunPosition:
         self.geocentric_longitude = 0
         self.geocentric_latitude = 0
 
+        self.X0 = 0
+        self.X1 = 0
+        self.X2 = 0
+        self.X3 = 0
+        self.X4 = 0
+
     # Dependencies Date Get
     def get_timezone_and_utc(self):
         tf = TimezoneFinder()
@@ -54,8 +60,8 @@ class SunPosition:
             utc_time = self.utc_time
 
             # Getting Timezone Area
-            self.latitude = -23.326388680858557
-            self.longitude = -51.20127294353894
+            self.latitude = -23.326388680858557 # Reference Latitude
+            self.longitude = -51.20127294353894 # Reference Longitude
 
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
             # Exporting
@@ -528,6 +534,20 @@ class SunPosition:
                 self.geocentric_latitude = geocentric_latitude
             time.sleep(1)
 
+    def nutation_in_longitude_and_obliquity(self):
+        while True:
+            # Importing Dependencies
+            jce = self.jce
+
+            if jce != 0:
+                # Calculating mean elongation of moon from sun (X0)
+                X0 = 297.85036 + 445267.111480 * jce - 0.0019142 * jce**2 + jce**3 / 189474
+
+
+                self.X0 = X0
+
+            time.sleep(1)
+
     def show_all_values(self):
         while True:
             """
@@ -563,6 +583,12 @@ class SunPosition:
             geocentric_longitude = self.geocentric_longitude
             geocentric_latitude = self.geocentric_latitude
 
+            X0 = self.X0
+            X1 = self.X1
+            X2 = self.X2
+            X3 = self.X3
+            X4 = self.X4
+
             if (
                     heliocentric_longitude
                     and heliocentric_latitude
@@ -571,11 +597,15 @@ class SunPosition:
                     and geocentric_latitude != 0
             ):
                 print("Values: ")
-                print(f"Heliocentric Longitude: {heliocentric_longitude}")
-                print(f"Heliocentric Latitude: {heliocentric_latitude}")
-                print(f"Heliocentric Position Radius: {heliocentric_position_radius}")
-                print(f"Geocentric Longitude: {geocentric_longitude}")
-                print(f"Geocentric Latitude: {geocentric_latitude}")
+                print(f"Heliocentric Longitude: {heliocentric_longitude}°")
+                print(f"Heliocentric Latitude: {heliocentric_latitude}°")
+                print(f"Heliocentric Position Radius: {heliocentric_position_radius}°")
+                print(f"Geocentric Longitude: {geocentric_longitude}°")
+                print(f"Geocentric Latitude: {geocentric_latitude}°")
+
+                print(f"Mean Elongation of Moon from Sun: {X0}°")
+
+                time.sleep(1)
             time.sleep(1)
 
 
@@ -614,6 +644,9 @@ sun_geocentric_longitude_and_latitude_thread = threading.Thread(
     target=sun_position.sun_geocentric_longitude_and_latitude
 )
 sun_geocentric_longitude_and_latitude_thread.start()
+
+nutation_in_longitude_and_obliquity_thread = threading.Thread(target=sun_position.nutation_in_longitude_and_obliquity)
+nutation_in_longitude_and_obliquity_thread.start()
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
 show_all_values_thread.start()
