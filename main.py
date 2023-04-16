@@ -540,11 +540,14 @@ class SunPosition:
             jce = self.jce
 
             if jce != 0:
-                # Calculating mean elongation of moon from sun (X0)
+                # Calculating Mean Elongation of Moon from Sun (X0)
                 X0 = 297.85036 + 445267.111480 * jce - 0.0019142 * jce**2 + jce**3 / 189474
+                # Calculating mean anomaly of the sun (X1)
+                X1 = 357.52772 + 35999.050340 * jce - 0.0001603 * jce**2 - jce**3 / 300000
 
 
                 self.X0 = X0
+                self.X1 = X1
 
             time.sleep(1)
 
@@ -604,6 +607,7 @@ class SunPosition:
                 print(f"Geocentric Latitude: {geocentric_latitude}°")
 
                 print(f"Mean Elongation of Moon from Sun: {X0}°")
+                print(f"Mean Anomaly of the Sun: {X1}°")
 
                 time.sleep(1)
             time.sleep(1)
