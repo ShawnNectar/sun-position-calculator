@@ -5,6 +5,7 @@ from datetime import datetime
 
 import numpy as np
 import pytz
+
 # import matplotlib.pyplot as plt
 from timezonefinder import TimezoneFinder
 
@@ -60,8 +61,8 @@ class SunPosition:
             utc_time = self.utc_time
 
             # Getting Timezone Area
-            self.latitude = -23.326388680858557 # Reference Latitude
-            self.longitude = -51.20127294353894 # Reference Longitude
+            self.latitude = -23.326388680858557  # Reference Latitude
+            self.longitude = -51.20127294353894  # Reference Longitude
 
             timezone = tf.timezone_at(lat=latitude, lng=longitude)
             # Exporting
@@ -98,14 +99,14 @@ class SunPosition:
             if year and month and day_decimal != 0:
                 # Calculating delta_t
                 t = (year - 1820) / 100
-                delta_t = 62.92 + 0.32217 * t + 0.005589 * t ** 2
+                delta_t = 62.92 + 0.32217 * t + 0.005589 * t**2
 
                 # Calculating Julian Day
                 jd = (
-                        int(365.25 * (year + 4716))
-                        + int(30.6001 * (month + 1))
-                        + day_decimal
-                        - 1524.5
+                    int(365.25 * (year + 4716))
+                    + int(30.6001 * (month + 1))
+                    + day_decimal
+                    - 1524.5
                 )
 
                 # Calculating Julian Ephemeris Day
@@ -334,13 +335,13 @@ class SunPosition:
                 L5_sum = np.sum(A5POS * np.cos(B5POS + (C5POS * jme)))
 
                 heliocentric_longitude = (
-                                                 L0_sum
-                                                 + (L1_sum * jme)
-                                                 + (L2_sum * jme ** 2)
-                                                 + (L3_sum * jme ** 3)
-                                                 + (L4_sum * jme ** 4)
-                                                 + (L5_sum * jme ** 5)
-                                         ) / 1e8
+                    L0_sum
+                    + (L1_sum * jme)
+                    + (L2_sum * jme**2)
+                    + (L3_sum * jme**3)
+                    + (L4_sum * jme**4)
+                    + (L5_sum * jme**5)
+                ) / 1e8
                 heliocentric_longitude = heliocentric_longitude * 180 / np.pi
                 heliocentric_longitude %= 360
 
@@ -503,12 +504,12 @@ class SunPosition:
                 L4_sum = np.sum(A4POS * np.cos(B4POS + (C4POS * jme)))
 
                 heliocentric_position_radius = (
-                                                       L0_sum
-                                                       + (L1_sum * jme)
-                                                       + (L2_sum * jme ** 2)
-                                                       + (L3_sum * jme ** 3)
-                                                       + (L4_sum * jme ** 4)
-                                               ) / 1e8
+                    L0_sum
+                    + (L1_sum * jme)
+                    + (L2_sum * jme**2)
+                    + (L3_sum * jme**3)
+                    + (L4_sum * jme**4)
+                ) / 1e8
 
                 # Exporting
                 self.heliocentric_position_radius = heliocentric_position_radius
@@ -541,16 +542,40 @@ class SunPosition:
 
             if jce != 0:
                 # Calculating Mean Elongation of Moon from Sun (X0)
-                X0 = 297.85036 + 445267.111480 * jce - 0.0019142 * jce**2 + jce**3 / 189474
+                X0 = (
+                    297.85036
+                    + 445267.111480 * jce
+                    - 0.0019142 * jce**2
+                    + jce**3 / 189474
+                )
                 # Calculating mean anomaly of the sun (X1)
-                X1 = 357.52772 + 35999.050340 * jce - 0.0001603 * jce**2 - jce**3 / 300000
+                X1 = (
+                    357.52772
+                    + 35999.050340 * jce
+                    - 0.0001603 * jce**2
+                    - jce**3 / 300000
+                )
                 # Calculating Mean Anomaly of the Moon (X2)
-                X2 = 134.96298 + 477198.867398 * jce - 0.0086972 * jce**2 + jce**3 / 56250
+                X2 = (
+                    134.96298
+                    + 477198.867398 * jce
+                    - 0.0086972 * jce**2
+                    + jce**3 / 56250
+                )
                 # Calculating Moon's Argument of Latitude (X3)
-                X3 = 93.27191 + 483202.017538 * jce - 0.0036825 * jce**2 + jce**3 / 327270
+                X3 = (
+                    93.27191
+                    + 483202.017538 * jce
+                    - 0.0036825 * jce**2
+                    + jce**3 / 327270
+                )
                 # Calculating Longitude of Ascending Node of Moon's mean Orbit on the Ecliptic
-                X4 = 125.04452 - 1934.136261 * jce + 0.0020708 * jce**2 + jce**3 / 450000
-
+                X4 = (
+                    125.04452
+                    - 1934.136261 * jce
+                    + 0.0020708 * jce**2
+                    + jce**3 / 450000
+                )
 
                 self.X0 = X0
                 self.X1 = X1
@@ -602,16 +627,16 @@ class SunPosition:
             X4 = self.X4
 
             if (
-                    heliocentric_longitude
-                    and heliocentric_latitude
-                    and heliocentric_position_radius
-                    and geocentric_longitude
-                    and geocentric_latitude
-                    and X0
-                    and X1
-                    and X2
-                    and X3
-                    and X4 != 0
+                heliocentric_longitude
+                and heliocentric_latitude
+                and heliocentric_position_radius
+                and geocentric_longitude
+                and geocentric_latitude
+                and X0
+                and X1
+                and X2
+                and X3
+                and X4 != 0
             ):
                 print("Values: ")
                 print(f"Heliocentric Longitude: {heliocentric_longitude}°")
@@ -625,7 +650,6 @@ class SunPosition:
                 print(f"Mean Anomaly of the Moon: {X2}°")
                 print(f"Moon's Argument of Latitude: {X3}°")
                 print(f"Ascending Node Moon's Mean Orbit Longitude Ecliptic: {X4}°")
-
 
                 time.sleep(1)
             time.sleep(1)
@@ -667,7 +691,9 @@ sun_geocentric_longitude_and_latitude_thread = threading.Thread(
 )
 sun_geocentric_longitude_and_latitude_thread.start()
 
-nutation_in_longitude_and_obliquity_thread = threading.Thread(target=sun_position.nutation_in_longitude_and_obliquity)
+nutation_in_longitude_and_obliquity_thread = threading.Thread(
+    target=sun_position.nutation_in_longitude_and_obliquity
+)
 nutation_in_longitude_and_obliquity_thread.start()
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
