@@ -1,11 +1,10 @@
-import math
+# import math
 import threading
 import time
-import numpy as np
 from datetime import datetime
 
+import numpy as np
 import pytz
-
 # import matplotlib.pyplot as plt
 from timezonefinder import TimezoneFinder
 
@@ -43,9 +42,7 @@ class SunPosition:
         self.geocentric_longitude = 0
         self.geocentric_latitude = 0
 
-
-
-# Dependencies Date Get
+    # Dependencies Date Get
     def get_timezone_and_utc(self):
         tf = TimezoneFinder()
         while True:
@@ -85,16 +82,9 @@ class SunPosition:
             # Importing Dependencies
             year = self.year
             month = self.month
-            day = self.day
             hour = self.hour
             minute = self.minute
             second = self.second
-            day_decimal = self.day_decimal
-            delta_t = self.delta_t
-            utc_time = self.utc_time
-
-            jd = self.jd
-            jde = self.jde
 
             # Define day decimal:
             day_decimal = hour + minute / 60 + second / 3600
@@ -102,14 +92,14 @@ class SunPosition:
             if year and month and day_decimal != 0:
                 # Calculating delta_t
                 t = (year - 1820) / 100
-                delta_t = 62.92 + 0.32217 * t + 0.005589 * t**2
+                delta_t = 62.92 + 0.32217 * t + 0.005589 * t ** 2
 
                 # Calculating Julian Day
                 jd = (
-                    int(365.25 * (year + 4716))
-                    + int(30.6001 * (month + 1))
-                    + day_decimal
-                    - 1524.5
+                        int(365.25 * (year + 4716))
+                        + int(30.6001 * (month + 1))
+                        + day_decimal
+                        - 1524.5
                 )
 
                 # Calculating Julian Ephemeris Day
@@ -128,10 +118,6 @@ class SunPosition:
             # Importing dependencies
             jd = self.jd
             jde = self.jde
-
-            jc = self.jc
-            jce = self.jce
-            jme = self.jme
 
             if jd and jde != 0:
                 # Calculating Julian Century
@@ -155,6 +141,7 @@ class SunPosition:
 
     # Earth Heliocentric Longitude
     def earth_heliocentric_longitude(self):
+        # Data Dependencies From Tables
         L0_terms = np.array(
             [
                 [1.75347046e08, 0.00000000e00, 0.00000000e00],
@@ -341,23 +328,23 @@ class SunPosition:
                 L5_sum = np.sum(A5POS * np.cos(B5POS + (C5POS * jme)))
 
                 heliocentric_longitude = (
-                    L0_sum
-                    + (L1_sum * jme)
-                    + (L2_sum * jme**2)
-                    + (L3_sum * jme**3)
-                    + (L4_sum * jme**4)
-                    + (L5_sum * jme**5)
-                ) / 1e8
-                heliocentric_longitude = heliocentric_longitude * 180 / math.pi
+                                                 L0_sum
+                                                 + (L1_sum * jme)
+                                                 + (L2_sum * jme ** 2)
+                                                 + (L3_sum * jme ** 3)
+                                                 + (L4_sum * jme ** 4)
+                                                 + (L5_sum * jme ** 5)
+                                         ) / 1e8
+                heliocentric_longitude = heliocentric_longitude * 180 / np.pi
                 heliocentric_longitude %= 360
 
                 # Exporting
                 self.heliocentric_longitude = heliocentric_longitude
 
-
             time.sleep(1)
 
     def earth_heliocentric_latitude(self):
+        # Data Dependencies From Tables
         B0_terms = np.array(
             [
                 [2.8000000e02, 3.1990000e00, 8.4334662e04],
@@ -389,7 +376,7 @@ class SunPosition:
                 L1_sum = np.sum(A1POS * np.cos(B1POS + (C1POS * jme)))
 
                 heliocentric_latitude = (L0_sum + (L1_sum * jme)) / 1e8
-                heliocentric_latitude = heliocentric_latitude * 180 / math.pi
+                heliocentric_latitude = heliocentric_latitude * 180 / np.pi
                 heliocentric_latitude %= 360
 
                 # Exporting
@@ -397,6 +384,7 @@ class SunPosition:
             time.sleep(1)
 
     def earth_heliocentric_position_radius(self):
+        # Data Dependencies From Tables
         R0_terms = np.array(
             [
                 [1.00013989e08, 0.00000000e00, 0.00000000e00],
@@ -508,16 +496,21 @@ class SunPosition:
                 L3_sum = np.sum(A3POS * np.cos(B3POS + (C3POS * jme)))
                 L4_sum = np.sum(A4POS * np.cos(B4POS + (C4POS * jme)))
 
-                heliocentric_position_radius = (L0_sum + (L1_sum * jme) + (L2_sum * jme**2) + (L3_sum * jme**3) + (L4_sum * jme**4)) / 1e8
+                heliocentric_position_radius = (
+                                                       L0_sum
+                                                       + (L1_sum * jme)
+                                                       + (L2_sum * jme ** 2)
+                                                       + (L3_sum * jme ** 3)
+                                                       + (L4_sum * jme ** 4)
+                                               ) / 1e8
 
                 # Exporting
                 self.heliocentric_position_radius = heliocentric_position_radius
             time.sleep(1)
 
-
     def sun_geocentric_longitude_and_latitude(self):
         while True:
-            # Importing
+            # Importing Dependenciesv
             heliocentric_longitude = self.heliocentric_longitude
             heliocentric_latitude = self.heliocentric_latitude
 
@@ -530,12 +523,14 @@ class SunPosition:
                 geocentric_latitude = -heliocentric_latitude
                 geocentric_latitude %= 360
 
+                # Exporting
                 self.geocentric_longitude = geocentric_longitude
                 self.geocentric_latitude = geocentric_latitude
             time.sleep(1)
 
     def show_all_values(self):
         while True:
+            """
             # Dependencies Date
             latitude = self.latitude
             longitude = self.longitude
@@ -558,6 +553,7 @@ class SunPosition:
             day_decimal = self.day_decimal
             delta_t = self.delta_t
             utc_time = self.utc_time
+            """
 
             # Main
             heliocentric_longitude = self.heliocentric_longitude
@@ -567,7 +563,13 @@ class SunPosition:
             geocentric_longitude = self.geocentric_longitude
             geocentric_latitude = self.geocentric_latitude
 
-            if heliocentric_longitude and heliocentric_latitude and heliocentric_position_radius and geocentric_longitude and geocentric_latitude != 0:
+            if (
+                    heliocentric_longitude
+                    and heliocentric_latitude
+                    and heliocentric_position_radius
+                    and geocentric_longitude
+                    and geocentric_latitude != 0
+            ):
                 print("Values: ")
                 print(f"Heliocentric Longitude: {heliocentric_longitude}")
                 print(f"Heliocentric Latitude: {heliocentric_latitude}")
@@ -575,6 +577,7 @@ class SunPosition:
                 print(f"Geocentric Longitude: {geocentric_longitude}")
                 print(f"Geocentric Latitude: {geocentric_latitude}")
             time.sleep(1)
+
 
 # MultiThreading
 sun_position = SunPosition()
@@ -602,10 +605,14 @@ earth_heliocentric_latitude_thread = threading.Thread(
 )
 earth_heliocentric_latitude_thread.start()
 
-earth_heliocentric_position_radius_thread = threading.Thread(target=sun_position.earth_heliocentric_position_radius)
+earth_heliocentric_position_radius_thread = threading.Thread(
+    target=sun_position.earth_heliocentric_position_radius
+)
 earth_heliocentric_position_radius_thread.start()
 
-sun_geocentric_longitude_and_latitude_thread = threading.Thread(target=sun_position.sun_geocentric_longitude_and_latitude)
+sun_geocentric_longitude_and_latitude_thread = threading.Thread(
+    target=sun_position.sun_geocentric_longitude_and_latitude
+)
 sun_geocentric_longitude_and_latitude_thread.start()
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
