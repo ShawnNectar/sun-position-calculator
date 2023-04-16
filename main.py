@@ -54,6 +54,8 @@ class SunPosition:
         self.nutation_longitude = 0
         self.nutation_obliquity = 0
 
+        self.mean_obliquity_ecliptic = 0
+
     # Dependencies Date Get
     def get_timezone_and_utc(self):
         tf = TimezoneFinder()
@@ -754,6 +756,32 @@ class SunPosition:
 
             time.sleep(1)
 
+    def true_obliquity_of_ecliptic(self):
+        while True:
+            # Importing Dependencies
+            jme = self.jme
+
+            U = jme / 10
+
+            if U is not None:
+                # Calculating Mean Obliquity of the Ecliptic
+                mean_obliquity_ecliptic = (
+                    84381.448
+                    - 4680.93 * U
+                    - 1.55 * U**2
+                    + 1999.25 * U**3
+                    - 51.38 * U**4
+                    - 249.67 * U**5
+                    - 39.05 * U**6
+                    + 7.12 * U**7
+                    + 27.87 * U**8
+                    + 5.79 * U**9
+                    + 2.45 * U**10
+                )
+
+                self.mean_obliquity_ecliptic = mean_obliquity_ecliptic
+            time.sleep(1)
+
     def show_all_values(self):
         while True:
             """
@@ -798,6 +826,8 @@ class SunPosition:
             nutation_longitude = self.nutation_longitude
             nutation_obliquity = self.nutation_obliquity
 
+            mean_obliquity_ecliptic = self.mean_obliquity_ecliptic
+
             if (
                 heliocentric_longitude
                 and heliocentric_latitude
@@ -810,7 +840,8 @@ class SunPosition:
                 and X3
                 and X4
                 and nutation_longitude
-                and nutation_obliquity != 0
+                and nutation_obliquity
+                and mean_obliquity_ecliptic != 0
             ):
                 print("Values: ")
                 print(f"Heliocentric Longitude: {heliocentric_longitude}°")
@@ -827,6 +858,8 @@ class SunPosition:
 
                 print(f"Nutation Longitude: {nutation_longitude}°")
                 print(f"Nutation Obliquity: {nutation_obliquity}°")
+
+                print(f"Mean Obliquity of the Ecliptic: {mean_obliquity_ecliptic}")
 
                 time.sleep(1)
             time.sleep(1)
@@ -872,6 +905,9 @@ nutation_in_longitude_and_obliquity_thread = threading.Thread(
     target=sun_position.nutation_in_longitude_and_obliquity
 )
 nutation_in_longitude_and_obliquity_thread.start()
+
+true_obliquity_of_ecliptic_thread = threading.Thread(target=sun_position.true_obliquity_of_ecliptic)
+true_obliquity_of_ecliptic_thread.start()
 
 show_all_values_thread = threading.Thread(target=sun_position.show_all_values)
 show_all_values_thread.start()
