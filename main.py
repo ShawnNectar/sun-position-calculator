@@ -548,12 +548,15 @@ class SunPosition:
                 X2 = 134.96298 + 477198.867398 * jce - 0.0086972 * jce**2 + jce**3 / 56250
                 # Calculating Moon's Argument of Latitude (X3)
                 X3 = 93.27191 + 483202.017538 * jce - 0.0036825 * jce**2 + jce**3 / 327270
+                # Calculating Longitude of Ascending Node of Moon's mean Orbit on the Ecliptic
+                X4 = 125.04452 - 1934.136261 * jce + 0.0020708 * jce**2 + jce**3 / 450000
 
 
                 self.X0 = X0
                 self.X1 = X1
                 self.X2 = X2
                 self.X3 = X3
+                self.X4 = X4
 
             time.sleep(1)
 
@@ -603,7 +606,12 @@ class SunPosition:
                     and heliocentric_latitude
                     and heliocentric_position_radius
                     and geocentric_longitude
-                    and geocentric_latitude != 0
+                    and geocentric_latitude
+                    and X0
+                    and X1
+                    and X2
+                    and X3
+                    and X4 != 0
             ):
                 print("Values: ")
                 print(f"Heliocentric Longitude: {heliocentric_longitude}°")
@@ -616,6 +624,7 @@ class SunPosition:
                 print(f"Mean Anomaly of the Sun: {X1}°")
                 print(f"Mean Anomaly of the Moon: {X2}°")
                 print(f"Moon's Argument of Latitude: {X3}°")
+                print(f"Ascending Node Moon's Mean Orbit Longitude Ecliptic: {X4}°")
 
 
                 time.sleep(1)
