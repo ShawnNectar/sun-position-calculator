@@ -785,7 +785,7 @@ class SunPosition:
     def show_all_values(self):
         while True:
             """
-            # Dependencies Date
+            # Can be Used Values
             latitude = self.latitude
             longitude = self.longitude
             timezone = self.timezone
